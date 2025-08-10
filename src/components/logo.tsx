@@ -28,7 +28,7 @@ export function Logo({ className }: { className?: string }) {
         </defs>
       </svg>
 
-      <span className="text-xl font-bold text-white">Finlab</span>
+      <span className="text-xl font-bold text-white">Chama Connect</span>
     </div>
   );
 }

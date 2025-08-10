@@ -49,35 +49,34 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen w-full">
-      <div className="relative hidden w-1/2 flex-col justify-between bg-[#187D7E] p-12 text-white lg:flex">
+    <div className="flex flex-col lg:flex-row min-h-screen w-full bg-background">
+      <div className="relative w-full h-64 lg:h-auto lg:w-1/2">
         <Image
           src="https://placehold.co/750x1052.png"
           alt="Man working on a laptop"
           data-ai-hint="man laptop coffee"
           layout="fill"
           objectFit="cover"
-          className="absolute inset-0"
         />
       </div>
 
-      <main className="flex flex-1 flex-col items-center justify-center bg-background p-4">
-        <div className="flex w-full max-w-md flex-col items-center justify-center space-y-14">
+      <main className="flex flex-1 flex-col items-center justify-center p-4">
+        <div className="flex w-full max-w-md flex-col items-center justify-center space-y-8 lg:space-y-14">
           <div className="space-y-6 text-center">
             <Logo />
             <div className="space-y-3.5">
-              <h1 className="text-4xl font-bold tracking-tight text-white">
-                Welcome back to Findash
+              <h1 className="text-2xl lg:text-4xl font-bold tracking-tight text-white">
+                Welcome back to Chama Connect
               </h1>
-              <p className="text-base font-semibold text-muted-foreground">
-                Let’s empower your financial task today with Findash.
+              <p className="text-sm lg:text-base font-semibold text-muted-foreground">
+                Let’s empower your financial task today with Chama Connect.
               </p>
             </div>
           </div>
 
-          <Card className="w-full rounded-2xl p-8">
-            <CardHeader className="p-0 pb-8 text-left">
-              <CardTitle className="text-3xl font-bold tracking-tight text-card-foreground">
+          <Card className="w-full rounded-2xl p-6 lg:p-8">
+            <CardHeader className="p-0 pb-8 text-center lg:text-left">
+              <CardTitle className="text-2xl lg:text-3xl font-bold tracking-tight text-card-foreground">
                 Login first to your account
               </CardTitle>
             </CardHeader>
@@ -85,7 +84,7 @@ export default function LoginPage() {
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <FormField
                     control={form.control}
@@ -101,7 +100,7 @@ export default function LoginPage() {
                             <Input
                               type="email"
                               placeholder="yourname@gmail.com"
-                              className="h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
+                              className="h-14 lg:h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
                               {...field}
                             />
                           </div>
@@ -124,7 +123,7 @@ export default function LoginPage() {
                             <Input
                               type="password"
                               placeholder="••••••••••"
-                              className="h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
+                              className="h-14 lg:h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
                               {...field}
                             />
                           </div>
@@ -133,7 +132,7 @@ export default function LoginPage() {
                       </FormItem>
                     )}
                   />
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
                     <FormField
                       control={form.control}
                       name="remember"
@@ -146,7 +145,7 @@ export default function LoginPage() {
                               className="h-5 w-5 rounded-[4px] border-primary data-[state=checked]:bg-primary"
                             />
                           </FormControl>
-                          <FormLabel className="cursor-pointer text-base font-semibold text-card-foreground">
+                          <FormLabel className="cursor-pointer text-sm lg:text-base font-semibold text-card-foreground">
                             Remember me
                           </FormLabel>
                         </FormItem>
@@ -154,7 +153,7 @@ export default function LoginPage() {
                     />
                     <Link
                       href="#"
-                      className="text-base font-semibold text-primary transition-colors hover:text-primary/90"
+                      className="text-sm lg:text-base font-semibold text-primary transition-colors hover:text-primary/90"
                     >
                       Forgot Password
                     </Link>
@@ -165,13 +164,13 @@ export default function LoginPage() {
                   >
                     Login
                   </Button>
-                  <div className="flex justify-center gap-1.5 pt-4">
-                    <p className="text-base font-semibold text-secondary">
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 pt-4">
+                    <p className="text-sm lg:text-base font-semibold text-secondary">
                       Don't have an account?
                     </p>
                     <Link
                       href="#"
-                      className="text-base font-semibold text-primary transition-colors hover:text-primary/90"
+                      className="text-sm lg:text-base font-semibold text-primary transition-colors hover:text-primary/90"
                     >
                       Register Here
                     </Link>
@@ -180,7 +179,7 @@ export default function LoginPage() {
               </Form>
             </CardContent>
           </Card>
-          <p className="text-sm text-secondary">
+          <p className="text-xs lg:text-sm text-secondary">
             © 2024 Chama Connect. All rights reserved.
           </p>
         </div>
