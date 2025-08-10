@@ -52,31 +52,28 @@ export default function LoginPage() {
     <div className="flex flex-col lg:flex-row min-h-screen w-full bg-background">
       <div className="relative w-full h-64 lg:h-auto lg:w-1/2">
         <Image
-          src="https://placehold.co/750x1052.png"
+          src="https://i.imgur.com/M89lWjJ.png"
           alt="Man working on a laptop"
           data-ai-hint="man laptop coffee"
-          layout="fill"
-          objectFit="cover"
+          fill
+          className="object-cover"
         />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
-      <main className="flex flex-1 flex-col items-center justify-center p-4">
-        <div className="flex w-full max-w-md flex-col items-center justify-center space-y-8 lg:space-y-14">
-          <div className="space-y-6 text-center">
+      <main className="flex flex-1 flex-col items-center justify-center p-2 py-12 lg:py-2">
+        <div className="flex w-full max-w-md flex-col items-center justify-center space-y-8 lg:space-y-6">
+          <div className="flex flex-col items-center text-center space-y-4">
             <Logo />
-            <div className="space-y-3.5">
-              <h1 className="text-2xl lg:text-4xl font-bold tracking-tight text-white">
-                Welcome back to Chama Connect
-              </h1>
-              <p className="text-sm lg:text-base font-semibold text-muted-foreground">
-                Let’s empower your financial task today with Chama Connect.
-              </p>
+            <div className="lg:hidden">
+              <h1 className="text-2xl font-bold text-white">Welcome back to Findash</h1>
+              <p className="text-sm text-muted-foreground">Let's empower your financial task today with Findash.</p>
             </div>
           </div>
 
-          <Card className="w-full rounded-2xl p-6 lg:p-8">
-            <CardHeader className="p-0 pb-8 text-center lg:text-left">
-              <CardTitle className="text-2xl lg:text-3xl font-bold tracking-tight text-card-foreground">
+          <Card className="w-full md:w-3/4 lg:w-full rounded-2xl p-6 lg:p-8 bg-card text-card-foreground">
+            <CardHeader className="p-0 pb-6 text-center">
+              <CardTitle className="text-2xl lg:text-3xl font-bold tracking-tight">
                 Login first to your account
               </CardTitle>
             </CardHeader>
@@ -91,16 +88,16 @@ export default function LoginPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs font-medium text-muted-foreground">
+                        <FormLabel className="text-xs font-medium text-muted-foreground/80">
                           Email
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground/60" />
                             <Input
                               type="email"
                               placeholder="yourname@gmail.com"
-                              className="h-14 lg:h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
+                              className="h-14 lg:h-16 rounded-xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/60 border-border"
                               {...field}
                             />
                           </div>
@@ -114,16 +111,16 @@ export default function LoginPage() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs font-medium text-muted-foreground">
+                        <FormLabel className="text-xs font-medium text-muted-foreground/80">
                           Password
                         </FormLabel>
                         <FormControl>
                            <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground/60" />
                             <Input
                               type="password"
                               placeholder="••••••••••"
-                              className="h-14 lg:h-16 rounded-2xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/80"
+                              className="h-14 lg:h-16 rounded-xl bg-card pl-12 text-sm text-card-foreground placeholder:text-card-foreground/60 border-border"
                               {...field}
                             />
                           </div>
@@ -145,7 +142,7 @@ export default function LoginPage() {
                               className="h-5 w-5 rounded-[4px] border-primary data-[state=checked]:bg-primary"
                             />
                           </FormControl>
-                          <FormLabel className="cursor-pointer text-sm lg:text-base font-semibold text-card-foreground">
+                          <FormLabel className="cursor-pointer text-sm font-semibold text-card-foreground">
                             Remember me
                           </FormLabel>
                         </FormItem>
@@ -153,7 +150,7 @@ export default function LoginPage() {
                     />
                     <Link
                       href="#"
-                      className="text-sm lg:text-base font-semibold text-primary transition-colors hover:text-primary/90"
+                      className="text-sm font-semibold text-primary transition-colors hover:text-primary/90"
                     >
                       Forgot Password
                     </Link>
@@ -165,12 +162,12 @@ export default function LoginPage() {
                     Login
                   </Button>
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-1.5 pt-4">
-                    <p className="text-sm lg:text-base font-semibold text-secondary">
+                    <p className="text-sm font-semibold text-secondary">
                       Don't have an account?
                     </p>
                     <Link
                       href="#"
-                      className="text-sm lg:text-base font-semibold text-primary transition-colors hover:text-primary/90"
+                      className="text-sm font-semibold text-primary transition-colors hover:text-primary/90"
                     >
                       Register Here
                     </Link>
@@ -179,10 +176,8 @@ export default function LoginPage() {
               </Form>
             </CardContent>
           </Card>
-          <p className="text-xs lg:text-sm text-secondary">
-            © 2024 Chama Connect. All rights reserved.
-          </p>
         </div>
+        <p className="text-xs text-secondary mt-8">© 2024 Finlab. All rights reserved.</p>
       </main>
     </div>
   );
