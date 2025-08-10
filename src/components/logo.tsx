@@ -1,37 +1,34 @@
-import type React from "react";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Chama Connect Logo"
-    >
-      <g clipPath="url(#clip0_103_2)">
-        <path
-          d="M36.3316 27.562C34.3644 32.2533 29.6221 35.3333 24 35.3333C17.7327 35.3333 12.6667 30.2673 12.6667 24C12.6667 17.7327 17.7327 12.6667 24 12.6667C29.6221 12.6667 34.3644 15.7467 36.3316 20.438"
-          stroke="hsl(var(--primary))"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M29.3333 24H18.6667"
-          stroke="hsl(var(--primary))"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_103_2">
-          <rect width="48" height="48" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
+    <div className={cn("flex items-center gap-2", className)}>
+      <svg
+        width="27"
+        height="27"
+        viewBox="0 0 27 27"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <circle cx="13.5" cy="13.5" r="13.5" fill="url(#logo-gradient)" />
+        <defs>
+          <linearGradient
+            id="logo-gradient"
+            x1="4.6875"
+            y1="4.6875"
+            x2="24.525"
+            y2="21.375"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#2AAC95" />
+            <stop offset="1" stopColor="#76D1F7" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <span className="text-xl font-bold text-white">Finlab</span>
+    </div>
   );
 }
