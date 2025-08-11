@@ -1,3 +1,4 @@
+
 "use client";
 
 import { InfoCard } from "@/components/dashboard/info-card";
@@ -24,8 +25,8 @@ const totalValue = dummyExpenseData.reduce((sum, item) => sum + item.value, 0);
 
 export function ExpenseCategoryCard() {
   return (
-    <InfoCard title="" className="p-6 gap-6 w-full lg:w-[554px] lg:h-auto">
-      <div className="flex justify-between items-center w-full mb-6">
+    <div className="bg-white dark:bg-[#2C3542] rounded-2xl p-6 flex flex-col gap-6 w-full lg:w-[554px] lg:h-auto lg:h-[289px]">
+      <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-1.5">
           <h2 className="font-manrope text-lg font-semibold text-[#1A1C1E] dark:text-white tracking-[-0.02em]">Expense Category</h2>
           <InfoIcon className="h-4.5 w-4.5 text-[#6C7278] dark:text-[#A2A6AA]" />
@@ -35,8 +36,8 @@ export function ExpenseCategoryCard() {
             <ArrowDown className="h-3.5 w-3.5" />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-        <div className="w-full md:w-1/2 h-64 relative">
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-8 lg:gap-[45px] w-full">
+        <div className="w-[190px] h-[190px] relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -63,18 +64,19 @@ export function ExpenseCategoryCard() {
               </div>
            </div>
         </div>
-        <div className="w-full md:w-1/2 flex flex-col gap-6">
+        <div className="flex flex-col gap-6 w-full lg:w-auto">
             {dummyExpenseData.map((item, index) => (
-                <div key={index} className="flex justify-between items-center">
+                <div key={index} className="flex justify-between items-center w-full lg:w-[271px]">
                     <div className="flex items-center gap-1.5">
                         <div className="w-3 h-3 rounded-full" style={{backgroundColor: item.color}}></div>
                         <span className="text-sm font-semibold text-[#6C7278] dark:text-[#A2A6AA]">{item.name} ({item.value}%)</span>
                     </div>
-                    <span className="text-sm font-bold text-[#1A1C1E] dark:text-white">${(item.value * 12500).toLocaleString('en-US', {minimumFractionDigits: 3, maximumFractionDigits: 3}).replace(/,/g, '.')}</span>
+                    <span className="text-sm font-bold text-[#1A1C1E] dark:text-white">${(item.value * 125).toLocaleString('en-US', {minimumFractionDigits: 3, maximumFractionDigits: 3}).replace(/,/g, '.')}</span>
                 </div>
             ))}
         </div>
       </div>
-    </InfoCard>
+    </div>
   );
 }
+
