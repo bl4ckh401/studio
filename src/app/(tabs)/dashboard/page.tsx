@@ -1,19 +1,11 @@
+
 "use client";
 
 import { useState } from 'react';
-// import { Calendar } from "@/components/ui/calendar"; // Not used in this layout
-// import { Input } from "@/components/ui/input"; // Not used in this layout
-// import { Logo } from "@/components/logo"; // Not used in this layout
-// import { ThemeToggle } from "@/components/theme-toggle"; // Not used in this layout
-import { ChevronRightIcon, SendIcon, CarIcon, GamepadIcon, BanknoteIcon, FlagIcon } from "lucide-react"; // Import necessary Lucide icons
-// import Image from 'next/image'; // Not used for current icons/placeholders
-import { Button } from '@/components/ui/button'; // Button is used
-
-
-// Import the new components
+import { CarIcon, GamepadIcon, BanknoteIcon } from "lucide-react";
 import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { DashboardTabs } from "@/components/dashboard/dashboard-tabs";
-import { InfoCard } from "@/components/dashboard/info-card"; // Although not directly used for the main cards, it's a base
+import { InfoCard } from "@/components/dashboard/info-card";
 import { RecentActivityCard } from "@/components/dashboard/recent-activity-card";
 import PocketPlanCard from "@/components/dashboard/pocket-plan-card";
 import { CurrencyCard } from "@/components/dashboard/currency-card";
@@ -21,13 +13,13 @@ import { IncomeAnalysisCard } from "@/components/dashboard/income-analysis-card"
 import { ExpenseAnalysisCard } from "@/components/dashboard/expense-analysis-card";
 import { BalanceCard } from '@/components/dashboard/balance-card';
 import { ExpenseCategoryCard } from '@/components/dashboard/expense-category-card';
+import { ChevronRightIcon } from "lucide-react";
 
 
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState('overview');
     const [date, setDate] = useState<Date | undefined>(new Date());
 
-    // Dummy data for the components
     const dummyActivities = [
         { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">ICN</div>, title: "Figma Pro", subtitle: "Subscriptions", amount: "-$23.21", date: "10/02/22 - 15.34" },
         { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">ICN</div>, title: "Adobe Collection", subtitle: "Subscriptions", amount: "-$50.21", date: "10/02/22 - 15.34" },
@@ -53,13 +45,9 @@ export default function DashboardPage() {
 
     return (
         <>
-            <div className="min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E] relative"> {/* Added relative to contain absolute children */}
+            <div className="min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E] relative">
                 <div className="relative w-full h-[337px] bg-[#1C2634] dark:bg-[#2C3542]">
-                    {/* Navigation */}
                     <DashboardNav />
-                    {/* Pass state handlers */}
-
-                    {/* Title and Breadcrumb */}
                     <div className="absolute top-[113px] left-10 xl:left-20 flex flex-col gap-3">
                         <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
                             Welcome back, Osborne Ozzy👏🏻
@@ -70,47 +58,43 @@ export default function DashboardPage() {
                             <span className="text-white font-semibold">Overview</span>
                         </div>
                     </div>
-                    {/* Dashboard Toggle and Date */}
-                    <div className="absolute bottom-0 w-full max-w-[1320px] flex justify-between items-center pb-4 border-b border-[rgba(255,255,255,0.3)]">
+                    <div className="absolute bottom-0 w-full px-[60px]">
                         <DashboardTabs />
                     </div>
                 </div>
-                {/* Main content area for cards */}
-                <div className="relative z-10 -mt-[180px] py-28 flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1320px] mx-auto">
+                
+                <main className="relative -mt-36 p-4 md:p-6 lg:p-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full max-w-[1320px] mx-auto">
+                        <div className="lg:col-span-4 flex flex-col gap-6">
+                           <BalanceCard />
+                           <RecentActivityCard activities={dummyActivities} />
+                        </div>
 
-                    <div className="flex flex-col gap-6 w-full lg:w-[40%]">
-                        <BalanceCard />
-                        <RecentActivityCard activities={dummyActivities} />
+                        <div className="lg:col-span-5 flex flex-col gap-6">
+                            <IncomeAnalysisCard
+                                title="Income Analysis"
+                                metric="$8,527,224"
+                                percentageChange="+3.1%"
+                                timePeriod="This Month"
+                                changeType="increase"
+                                changeAmount="$2.172"
+                            />
+                            <ExpenseAnalysisCard
+                                title="Expense Analysis"
+                                metric="$2,056,123"
+                                percentageChange="-2.1%"
+                                timePeriod="This Month"
+                                changeType="decrease"
+                            />
+                            <ExpenseCategoryCard />
+                        </div>
+
+                        <div className="lg:col-span-3 flex flex-col gap-6">
+                            <PocketPlanCard plans={dummyPocketPlans} />
+                            <CurrencyCard exchangeRates={dummyExchangeRates} />
+                        </div>
                     </div>
-
-                    <div className="flex flex-col gap-6 w-full lg:w-[30%]">
-                        <IncomeAnalysisCard
-                            title="Income Analysis"
-                            metric="$8,527,224"
-                            percentageChange="+3.1%"
-                            timePeriod="This Month"
-                            changeType="increase"
-                            changeAmount="$2.172"
-                        />
-                        <ExpenseAnalysisCard
-                            title="Expense Analysis"
-                            metric="$2,056,123"
-                            percentageChange="-2.1%"
-                            timePeriod="This Month"
-                            changeType="decrease"
-                        />
-                        <ExpenseCategoryCard />
-                    </div>
-
-                    {/* <div className="flex flex-col gap-6 w-full lg:w-[30%]"> 
-                        <InfoCard title="My Pocked Plans" seeMoreHref="#">
-                            <div className="grid grid-cols-2 gap-4">
-                                <PocketPlanCard plans={dummyPocketPlans} />
-                            </div>
-                        </InfoCard>
-                        <CurrencyCard exchangeRates={dummyExchangeRates} />
-                    </div> */}
-                </div>
+                </main>
             </div>
         </>
     );

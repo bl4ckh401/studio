@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -11,9 +12,9 @@ export function DashboardTabs() {
   // const [date, setDate] = useState<Date | undefined>(new Date()); // Keep if using a Calendar component
 
   return (
-    <div className="absolute bottom-16 px-[60px] w-full max-w-[1320px] flex justify-between items-center pb-4">
+    <div className="w-full flex justify-between items-center pb-4 border-b border-[rgba(255,255,255,0.1)]">
       {/* Dashboard Toggle */}
-      <div className="flex flex-row items-start p-0 w-auto h-[54px] border-b border-[rgba(255,255,255,0.3)]">
+      <div className="flex flex-row items-start p-0 h-[54px]">
         <Button
           variant="ghost"
           className={`rounded-none border-b-2 h-full px-6 py-[15px] text-center font-manrope text-base font-medium tracking-[-0.02em] ${activeTab === 'overview' ? 'border-[#31B099] text-white' : 'border-transparent text-[#A2A6AA]'}`}
