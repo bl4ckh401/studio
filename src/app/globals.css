@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,8 +15,8 @@ body {
     --card-foreground: 220 13% 18%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 13% 18%;
-    --primary: 169 57% 53%; /* #2ab799 */
-    --primary-foreground: 0 0% 100%;
+    --primary: 137 77% 76%;; /* #2ab799 */
+    --primary-foreground: 0 0% 1%;
     --secondary: 210 9% 45%; /* #6C7278 */
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
@@ -42,6 +43,29 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  .theme-light {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 18%;
+    --card: 220 13% 18%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 13% 18%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 169 57% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 9% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 20% 96.1%;
+    --muted-foreground: 206 10% 74%;
+    --accent: 210 20% 96.1%;
+    --accent-foreground: 220 13% 18%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 20% 91%;
+    --input: 210 20% 91%;
+    --ring: 169 57% 53%;
+  }
+
   .dark {
     --background: 210 7% 11%; /* #1A1C1E */
     --foreground: 0 0% 100%; /* #FFFFFF */
@@ -49,8 +73,8 @@ body {
     --card-foreground: 210 7% 11%; /* #1A1C1E */
     --popover: 0 0% 100%;
     --popover-foreground: 210 7% 11%;
-    --primary: 169 57% 53%; /* #2ab799 -> from #31B099 */
-    --primary-foreground: 0 0% 100%;
+    --primary: 137 77% 76%; /* #2ab799 -> from #31B099 */
+    --primary-foreground: 0 0% 1%;
     --secondary: 210 9% 45%; /* #6C7278 */
     --secondary-foreground: 0 0% 100%;
     --muted: 210 9% 45%;
@@ -86,3 +110,5 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+    

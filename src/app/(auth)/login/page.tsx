@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -26,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -50,7 +52,10 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen w-full bg-background">
-      <div className="relative w-full h-64 lg:h-auto lg:w-1/2">
+       <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+      <div className="relative w-full h-64 lg:h-screen lg:w-1/2">
         <Image
           src="https://i.imgur.com/M89lWjJ.png"
           alt="Man working on a laptop"
@@ -66,12 +71,16 @@ export default function LoginPage() {
           <div className="flex flex-col items-center text-center space-y-4">
             <Logo />
             <div className="lg:hidden">
-              <h1 className="text-2xl font-bold text-white">Welcome back to Findash</h1>
+              <h1 className="text-2xl font-bold text-foreground">Welcome back to Findash</h1>
               <p className="text-sm text-muted-foreground">Let's empower your financial task today with Findash.</p>
+            </div>
+            <div className="hidden lg:block text-center">
+               <h1 className="text-4xl font-bold text-foreground tracking-[-0.03em]">Welcome back to Findash</h1>
+               <p className="text-base text-muted-foreground mt-3.5">Let’s empower your financial task today with Findash.</p>
             </div>
           </div>
 
-          <Card className="w-full md:w-3/4 lg:w-full rounded-2xl p-6 lg:p-8 bg-card text-card-foreground">
+          <Card className="w-full rounded-2xl p-6 lg:p-8 bg-card text-card-foreground">
             <CardHeader className="p-0 pb-6 text-center">
               <CardTitle className="text-2xl lg:text-3xl font-bold tracking-tight">
                 Login first to your account
@@ -166,7 +175,7 @@ export default function LoginPage() {
                       Don't have an account?
                     </p>
                     <Link
-                      href="#"
+                      href="/signup"
                       className="text-sm font-semibold text-primary transition-colors hover:text-primary/90"
                     >
                       Register Here
@@ -182,3 +191,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+    

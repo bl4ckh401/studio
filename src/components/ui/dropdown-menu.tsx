@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import { Check, ChevronRight, Circle, Monitor, Moon, Sun } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -157,14 +157,36 @@ const DropdownMenuLabel = React.forwardRef<
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 
 const DropdownMenuSeparator = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
+ React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
+ React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
 >(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.Separator
-    ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-muted", className)}
-    {...props}
-  />
+ <DropdownMenuPrimitive.Separator
+ ref={ref}
+ className={cn("-mx-1 my-1 h-px bg-muted", className)}
+ {...props}
+ />
+))
+DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
+
+const DropdownMenuModeItem = React.forwardRef<
+ React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
+ React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
+>(({ className, children, ...props }, ref) => (
+ <DropdownMenuPrimitive.RadioItem
+ ref={ref}
+ className={cn(
+ "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not(.lucide-dot)]:pointer-events-none [&_svg:not(.lucide-dot)]:size-4 [&_svg:not(.lucide-dot)]:shrink-0",
+ className
+ )}
+ {...props}
+ >
+ <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+ <DropdownMenuPrimitive.ItemIndicator>
+ <Circle className="lucide lucide-dot h-2 w-2 fill-current" />
+ </DropdownMenuPrimitive.ItemIndicator>
+ </span>
+ {children}
+ </DropdownMenuPrimitive.RadioItem>
 ))
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
@@ -196,5 +218,6 @@ export {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuModeItem,
   DropdownMenuRadioGroup,
 }
