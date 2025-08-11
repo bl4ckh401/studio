@@ -51,23 +51,37 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen w-full bg-background">
+    <div className="min-h-screen w-full bg-background">
        <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
-      <div className="relative w-full h-64 lg:h-screen lg:w-1/2">
-        <Image
-          src="https://i.imgur.com/M89lWjJ.png"
-          alt="Man working on a laptop"
-          data-ai-hint="man laptop coffee"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-      </div>
+      <div className="flex flex-col lg:flex-row">
+         <div className="hidden lg:flex lg:fixed lg:w-1/2 lg:h-full flex-col">
+          <div className="flex-grow relative">
+            <Image
+              src="https://i.imgur.com/M89lWjJ.png"
+              alt="Man working on a laptop"
+              data-ai-hint="man laptop coffee"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+          </div>
+        </div>
 
-      <main className="flex flex-1 flex-col items-center justify-center p-2 py-12 lg:py-2">
-        <div className="flex w-full max-w-md flex-col items-center justify-center space-y-8 lg:space-y-6">
+        <div className="lg:hidden relative h-64 w-full">
+           <Image
+              src="https://i.imgur.com/M89lWjJ.png"
+              alt="Man working on a laptop"
+               data-ai-hint="man laptop coffee"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+        </div>
+
+        <main className="flex flex-1 flex-col items-center justify-center p-4 lg:ml-[50%] lg:w-1/2 lg:min-h-screen">
+          <div className="flex w-full max-w-md flex-col items-center justify-center space-y-8 py-12 lg:py-8">
           <div className="flex flex-col items-center text-center space-y-4">
             <Logo />
             <div className="lg:hidden">
@@ -185,11 +199,10 @@ export default function LoginPage() {
               </Form>
             </CardContent>
           </Card>
+          <p className="text-xs text-muted-foreground">© 2025 Chama Connect. All rights reserved.</p>
         </div>
-        <p className="text-xs text-secondary mt-8">© 2025 Chama Connect. All rights reserved.</p>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
-
-    
