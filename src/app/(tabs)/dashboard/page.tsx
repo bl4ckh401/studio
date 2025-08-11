@@ -44,12 +44,14 @@ export default function DashboardPage() {
 
 
     return (
-        <>
-            <div className="min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E] relative">
-                <div className="relative w-full h-[337px] bg-[#1C2634] dark:bg-[#2C3542]">
-                    <DashboardNav />
-                    <div className="absolute top-[113px] left-10 xl:left-20 flex flex-col gap-3">
-                        <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
+        <div className="flex flex-col min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
+            <header className="sticky top-0 z-30">
+                <DashboardNav />
+            </header>
+            <div className="w-full bg-[#1C2634] dark:bg-[#2C3542] pb-32">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
+                    <div className="flex flex-col gap-3 py-6">
+                         <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
                             Welcome back, Osborne Ozzy👏🏻
                         </h1>
                         <div className="flex items-center gap-2 text-[#A2A6AA] font-manrope text-xs">
@@ -58,19 +60,19 @@ export default function DashboardPage() {
                             <span className="text-white font-semibold">Overview</span>
                         </div>
                     </div>
-                    <div className="absolute bottom-0 w-full px-[60px]">
-                        <DashboardTabs />
-                    </div>
+                     <DashboardTabs />
                 </div>
-                
-                <main className="relative -mt-36 p-4 md:p-6 lg:p-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full max-w-[1320px] mx-auto">
-                        <div className="lg:col-span-4 flex flex-col gap-6">
+            </div>
+            
+            <main className="flex-grow w-full -mt-32">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
+                    <div className="grid grid-cols-12 gap-6">
+                        <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
                            <BalanceCard />
                            <RecentActivityCard activities={dummyActivities} />
                         </div>
 
-                        <div className="lg:col-span-5 flex flex-col gap-6">
+                        <div className="col-span-12 lg:col-span-5 flex flex-col gap-6">
                             <IncomeAnalysisCard
                                 title="Income Analysis"
                                 metric="$8,527,224"
@@ -89,13 +91,16 @@ export default function DashboardPage() {
                             <ExpenseCategoryCard />
                         </div>
 
-                        <div className="lg:col-span-3 flex flex-col gap-6">
+                        <div className="col-span-12 lg:col-span-3 flex flex-col gap-6">
                             <PocketPlanCard plans={dummyPocketPlans} />
                             <CurrencyCard exchangeRates={dummyExchangeRates} />
                         </div>
                     </div>
-                </main>
-            </div>
-        </>
+                </div>
+            </main>
+             <footer className="w-full p-4 text-center text-xs text-muted-foreground">
+                © 2025 Chama Connect. All rights reserved.
+            </footer>
+        </div>
     );
 }

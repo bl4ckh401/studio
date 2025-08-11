@@ -8,38 +8,37 @@ import Image from 'next/image';
 
 export function DashboardNav() {
   return (
-    <nav className="w-full h-[89px] bg-[#1C2536] dark:bg-[#1A1C1E] flex items-center justify-between px-[60px]">
-      <div className="flex items-center gap-[64px]"> {/* Adjusted gap based on style */}
+    <nav className="w-full h-[89px] bg-[#1C2536] dark:bg-[#1A1C1E] flex items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-20">
+      <div className="flex items-center gap-4 md:gap-8 lg:gap-16">
         <Logo />
-        <div className="flex gap-[10px]"> {/* Adjusted gap */}
-          {/* Navigation links */}
-          <Button variant="ghost" className="px-[34px] py-[14px] bg-[rgba(255,255,255,0.1)] rounded-[14px] text-white font-satoshi text-sm font-medium">Dashboard</Button> {/* Adjusted padding and added background/border-radius for active */}
-          <Button variant="ghost" className="px-[34px] py-[14px] rounded-[14px] text-[#A2A6AA] font-satoshi text-sm font-medium">Wallets</Button> {/* Adjusted padding and added border-radius */}
-          <Button variant="ghost" className="px-[34px] py-[14px] rounded-[14px] text-[#A2A6AA] font-satoshi text-sm font-medium">Settings</Button> {/* Adjusted padding and added border-radius */}
-          <Button variant="ghost" className="px-[34px] py-[14px] rounded-[14px] text-[#A2A6AA] font-satoshi text-sm font-medium">Help & Center</Button> {/* Adjusted padding and added border-radius */}
+        <div className="hidden md:flex items-center gap-2">
+          <Button variant="ghost" className="px-4 py-2 bg-[rgba(255,255,255,0.1)] rounded-lg text-white font-satoshi text-sm font-medium">Dashboard</Button>
+          <Button variant="ghost" className="px-4 py-2 rounded-lg text-[#A2A6AA] font-satoshi text-sm font-medium">Wallets</Button>
+          <Button variant="ghost" className="px-4 py-2 rounded-lg text-[#A2A6AA] font-satoshi text-sm font-medium">Settings</Button>
+          <Button variant="ghost" className="px-4 py-2 rounded-lg text-[#A2A6AA] font-satoshi text-sm font-medium">Help & Center</Button>
         </div>
       </div>
-      <div className="flex items-center gap-[14px]"> {/* Adjusted gap */}
-        <div className="flex items-center px-[18px] py-0 bg-[rgba(255,255,255,0.07)] rounded-full gap-[16px] h-[48px] w-[210px]"> {/* Adjusted padding, background, rounded, gap, height, width */}
-          <SearchIcon className="h-[24px] w-[24px] text-[#A2A6AA]" /> {/* Adjusted icon size */}
-          <Input placeholder="Search anything here" className="bg-transparent border-none text-white placeholder:text-[rgba(255,255,255,0.5)] focus-visible:ring-0 focus-visible:ring-offset-0 text-[14px] font-satoshi font-medium h-auto py-0" /> {/* Adjusted placeholder color, font, height, padding */}
+      <div className="flex items-center gap-2 md:gap-4">
+        <div className="hidden sm:flex items-center px-4 py-2 bg-[rgba(255,255,255,0.07)] rounded-full gap-2 h-12 w-auto max-w-xs">
+          <SearchIcon className="h-6 w-6 text-[#A2A6AA]" />
+          <Input placeholder="Search anything here" className="bg-transparent border-none text-white placeholder:text-[rgba(255,255,255,0.5)] focus-visible:ring-0 focus-visible:ring-offset-0 text-sm h-auto py-0" />
         </div>
-        <Button variant="ghost" className="p-[12px] bg-[rgba(255,255,255,0.07)] rounded-full h-[48px] w-[48px] flex items-center justify-center"> {/* Adjusted padding, background, rounded, height, width, added flex properties */}
-          <BellIcon className="h-[24px] w-[24px] text-white" /> {/* Adjusted icon size */}
+        <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
+          <BellIcon className="h-6 w-6 text-white" />
         </Button>
-         <Button variant="ghost" className="p-[12px] bg-[rgba(255,255,255,0.07)] rounded-full h-[48px] w-[48px] flex items-center justify-center">
-          <MessageSquare className="h-[24px] w-[24px] text-white" />
+         <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
+          <MessageSquare className="h-6 w-6 text-white" />
         </Button>
-        {/* Profile Picture */}
-         <div className="w-[48px] h-[48px] rounded-full overflow-hidden border-[7px] border-[#2C3542]"> {/* Adjusted border */}
+         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#2C3542]">
             <Image
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cfc37cda?auto=format&fit=crop&q=80&w=2980&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Placeholder Unsplash image
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cfc37cda?auto=format&fit=crop&q=80&w=2980&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Profile Picture"
               width={48}
               height={48}
-              className="object-cover"
+              className="object-cover w-full h-full"
             />
           </div>
+          <ThemeToggle />
       </div>
     </nav>
   );
