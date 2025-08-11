@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/logo"; // Assuming you have a Logo component
 import { ThemeToggle } from "@/components/theme-toggle"; // Assuming you have a ThemeToggle component
-import { SearchIcon, BellIcon } from "lucide-react";
+import { SearchIcon, BellIcon, MessageSquare } from "lucide-react";
 import Image from 'next/image';
 
 export function DashboardNav() {
@@ -26,6 +26,9 @@ export function DashboardNav() {
         </div>
         <Button variant="ghost" className="p-[12px] bg-[rgba(255,255,255,0.07)] rounded-full h-[48px] w-[48px] flex items-center justify-center"> {/* Adjusted padding, background, rounded, height, width, added flex properties */}
           <BellIcon className="h-[24px] w-[24px] text-white" /> {/* Adjusted icon size */}
+        </Button>
+         <Button variant="ghost" className="p-[12px] bg-[rgba(255,255,255,0.07)] rounded-full h-[48px] w-[48px] flex items-center justify-center">
+          <MessageSquare className="h-[24px] w-[24px] text-white" />
         </Button>
         {/* Profile Picture */}
          <div className="w-[48px] h-[48px] rounded-full overflow-hidden border-[7px] border-[#2C3542]"> {/* Adjusted border */}

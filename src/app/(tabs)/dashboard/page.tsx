@@ -62,7 +62,7 @@ export default function DashboardPage() {
                     {/* Title and Breadcrumb */}
                     <div className="absolute top-[113px] left-10 xl:left-20 flex flex-col gap-3">
                         <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
-                            Welcome back, Rainer Yaeger 👏🏻
+                            Welcome back, Osborne Ozzy👏🏻
                         </h1>
                         <div className="flex items-center gap-2 text-[#A2A6AA] font-manrope text-xs">
                             <span>Dashboard</span>

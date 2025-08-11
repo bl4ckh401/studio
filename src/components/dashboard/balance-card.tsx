@@ -12,7 +12,7 @@ export function BalanceCard() {
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center space-x-1.5">
           <h3 className="text-lg font-semibold leading-relaxed tracking-[-0.02em] text-secondary-500 dark:text-gray-200">
-            Total Balance
+            Total Contributions
           </h3>
           {/* Placeholder for info-circle icon */}
           <div className="w-[18px] h-[18px] text-secondary-400 dark:text-gray-400">
