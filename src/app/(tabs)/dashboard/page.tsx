@@ -20,6 +20,7 @@ import { CurrencyCard } from "@/components/dashboard/currency-card";
 import { IncomeAnalysisCard } from "@/components/dashboard/income-analysis-card";
 import { ExpenseAnalysisCard } from "@/components/dashboard/expense-analysis-card";
 import { BalanceCard } from '@/components/dashboard/balance-card';
+import { ExpenseCategoryCard } from '@/components/dashboard/expense-category-card';
 
 
 export default function DashboardPage() {
@@ -98,11 +99,7 @@ export default function DashboardPage() {
                             timePeriod="This Month"
                             changeType="decrease"
                         />
-                        <InfoCard title="Expense Category">
-                            <div className="h-40 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center text-gray-500">
-                                Expense Category Chart Placeholder
-                            </div>
-                        </InfoCard>
+                        <ExpenseCategoryCard />
                     </div>
 
                     {/* <div className="flex flex-col gap-6 w-full lg:w-[30%]"> 
