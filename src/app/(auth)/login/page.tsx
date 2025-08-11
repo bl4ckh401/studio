@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Lock, User } from "lucide-react";
+import { Lock, User, Phone, User2, Facebook, X } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -85,12 +85,12 @@ export default function LoginPage() {
           <div className="flex flex-col items-center text-center space-y-4">
             <Logo />
             <div className="lg:hidden">
-              <h1 className="text-2xl font-bold text-foreground">Welcome back to Findash</h1>
-              <p className="text-sm text-muted-foreground">Let's empower your financial task today with Findash.</p>
+              <h1 className="text-2xl font-bold text-foreground">Welcome back to Chama Connect</h1>
+              <p className="text-sm text-muted-foreground">Let's empower your financial task today with Chama Connect.</p>
             </div>
             <div className="hidden lg:block text-center">
-               <h1 className="text-4xl font-bold text-foreground tracking-[-0.03em]">Welcome back to Findash</h1>
-               <p className="text-base text-muted-foreground mt-3.5">Let’s empower your financial task today with Findash.</p>
+               <h1 className="text-4xl font-bold text-foreground tracking-[-0.03em]">Welcome back to Chama Connect</h1>
+               <p className="text-base text-muted-foreground mt-3.5">Let’s empower your financial task today with Chama Connect.</p>
             </div>
           </div>
 

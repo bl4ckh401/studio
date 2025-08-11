@@ -107,7 +107,7 @@ export default function SignUpPage() {
             <div className="flex flex-col items-center text-center space-y-4">
               <Logo />
               <div className="lg:hidden">
-                <h1 className="text-2xl font-bold text-foreground">Join Findash</h1>
+                <h1 className="text-2xl font-bold text-foreground">Join Chama Connect</h1>
                 <p className="text-sm text-muted-foreground">
                   Create your account to get started.
                 </p>
