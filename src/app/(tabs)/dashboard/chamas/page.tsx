@@ -123,32 +123,37 @@ export default function ChamasGroupsOverviewPage() {
   }, []);
 
   return (
-    <main className="flex-grow w-full -mt-24 md:-mt-32">
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Groups Overview</h1>
-          <p className="text-muted-foreground">Manage all your investment groups in one place.</p>
-        </div>
+    <div className="flex-grow w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
+      <main className="flex-grow w-full relative z-10">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
+            <div className="mb-8 pt-4">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Groups Overview</h1>
+              <p className="text-muted-foreground">Manage all your investment groups in one place.</p>
+            </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-          <Input placeholder="Search groups..." className="w-full sm:max-w-xs" />
-          <Button className="flex items-center gap-2 w-full sm:w-auto">
-            <PlusIcon className="h-4 w-4" />
-            Create Group
-          </Button>
-        </div>
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+              <Input placeholder="Search groups..." className="w-full sm:max-w-xs bg-card" />
+              <Button className="flex items-center gap-2 w-full sm:w-auto">
+                <PlusIcon className="h-4 w-4" />
+                Create Group
+              </Button>
+            </div>
 
-        {loading && <div className="text-center text-muted-foreground">Loading groups...</div>}
-        {error && <div className="text-center text-destructive">Error: {error}</div>}
-        
-        {!loading && !error && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {groups.map((group) => (
-              <ChamaCard key={group.id} group={group} />
-            ))}
-          </div>
-        )}
-      </div>
-    </main>
+            {loading && <div className="text-center text-muted-foreground">Loading groups...</div>}
+            {error && <div className="text-center text-destructive">Error: {error}</div>}
+            
+            {!loading && !error && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {groups.map((group) => (
+                  <ChamaCard key={group.id} group={group} />
+                ))}
+              </div>
+            )}
+        </div>
+      </main>
+       <footer className="w-full p-4 text-center text-xs text-muted-foreground">
+         © 2025 Chama Connect. All rights reserved.
+       </footer>
+    </div>
   );
 }
