@@ -7,7 +7,7 @@ export function BalanceCard() {
   const cardNumber = "**** 7189";
 
   return (
-    <InfoCard className="p-6 space-y-4 bg-white rounded-2xl dark:bg-[#2C3542]">
+    <InfoCard className="p-6 space-y-4 bg-white rounded-2xl dark:bg-[#2C3542] w-full shadow-md">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center space-x-1.5">
           <h3 className="text-lg font-semibold text-secondary-500 dark:text-gray-200">

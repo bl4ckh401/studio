@@ -14,6 +14,7 @@ import { ExpenseAnalysisCard } from "@/components/dashboard/expense-analysis-car
 import { BalanceCard } from '@/components/dashboard/balance-card';
 import { ExpenseCategoryCard } from '@/components/dashboard/expense-category-card';
 import { ChevronRightIcon } from "lucide-react";
+import ChamasListCard from '@/components/dashboard/chamas-list-card';
 
 
 export default function DashboardPage() {
@@ -39,40 +40,26 @@ export default function DashboardPage() {
         { icon: <div className="h-10 w-10 bg-[#E8EDF2] dark:bg-[#222A35] rounded-lg flex items-center justify-center"><CarIcon className="h-6 w-6 text-[#8C9BA5]" /></div>, title: "New Car", amount: "$5.000,00" },
         { icon: <div className="h-10 w-10 bg-[#E8EDF2] dark:bg-[#222A35] rounded-lg flex items-center justify-center"><GamepadIcon className="h-6 w-6 text-[#8C9BA5]" /></div>, title: "New Console", amount: "$5.000,00" },
         { icon: <div className="h-10 w-10 bg-[#E8EDF2] dark:bg-[#222A35] rounded-lg flex items-center justify-center"><BanknoteIcon className="h-6 w-6 text-[#8C9BA5]" /></div>, title: "Savings", amount: "$5.000,00" },
-        { icon: <div className="h-10 w-10 bg-[#E8EDF2] dark:bg-[#222A35] rounded-lg flex items-center justify-center"><CarIcon className="h-6 w-6 text-[#8C9BA5]" /></div>, title: "New Car", amount: "$5.000,00" }, // Duplicate for layout
+        // { icon: <div className="h-10 w-10 bg-[#E8EDF2] dark:bg-[#222A35] rounded-lg flex items-center justify-center"><CarIcon className="h-6 w-6 text-[#8C9BA5]" /></div>, title: "New Car", amount: "$5.000,00" }, // Duplicate for layout
     ];
 
 
     return (
         <div className="flex flex-col min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
-            <header className="sticky top-0 z-30">
-                <DashboardNav />
-            </header>
-            <div className="w-full bg-[#1C2634] dark:bg-[#2C3542] pb-32">
-                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
-                    <div className="flex flex-col gap-3 py-6">
-                         <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
-                            Welcome back, Osborne Ozzy👏🏻
-                        </h1>
-                        <div className="flex items-center gap-2 text-[#A2A6AA] font-manrope text-xs">
-                            <span>Dashboard</span>
-                            <ChevronRightIcon className="h-2 w-2" />
-                            <span className="text-white font-semibold">Overview</span>
-                        </div>
-                    </div>
-                     <DashboardTabs />
-                </div>
-            </div>
-            
-            <main className="flex-grow w-full -mt-32">
-                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
-                    <div className="grid grid-cols-12 gap-6">
-                        <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
-                           <BalanceCard />
-                           <RecentActivityCard activities={dummyActivities} />
+
+            <main className="flex-grow w-full relative z-10">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr_1fr] gap-6 auto-rows-min">
+
+                        {/* Column 1 */}
+                        <div className="flex flex-col gap-6 min-w-0">
+                            <BalanceCard />
+                            {/* <ChamasListCard /> */}
+                            <RecentActivityCard activities={dummyActivities} />
                         </div>
 
-                        <div className="col-span-12 lg:col-span-5 flex flex-col gap-6">
+                        {/* Column 2 */}
+                        <div className="flex flex-col gap-6 min-w-0">
                             <IncomeAnalysisCard
                                 title="Income Analysis"
                                 metric="$8,527,224"
@@ -91,14 +78,17 @@ export default function DashboardPage() {
                             <ExpenseCategoryCard />
                         </div>
 
-                        <div className="col-span-12 lg:col-span-3 flex flex-col gap-6">
+                        {/* Column 3 */}
+                        <div className="flex flex-col gap-6 min-w-0">
                             <PocketPlanCard plans={dummyPocketPlans} />
                             <CurrencyCard exchangeRates={dummyExchangeRates} />
                         </div>
+
                     </div>
                 </div>
             </main>
-             <footer className="w-full p-4 text-center text-xs text-muted-foreground">
+
+            <footer className="w-full p-4 text-center text-xs text-muted-foreground">
                 © 2025 Chama Connect. All rights reserved.
             </footer>
         </div>

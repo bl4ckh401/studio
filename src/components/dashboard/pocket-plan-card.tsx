@@ -45,7 +45,7 @@ interface PocketPlanCardProps {
 
 const PocketPlanCard: React.FC<PocketPlanCardProps> = ({ plans }) => {
   return (
-    <Card className="flex flex-col items-start p-6 space-y-6 bg-white rounded-2xl dark:bg-[#2C3542] w-full">
+    <Card className="flex flex-col items-start p-6 space-y-6 bg-white rounded-2xl dark:bg-[#2C3542] w-full ">
       <CardHeader className="flex flex-row items-center justify-between w-full p-0">
         <CardTitle className="text-lg font-semibold flex items-center gap-1.5 text-[#1A1C1E] dark:text-white">
           My Pocket Plans
@@ -65,7 +65,7 @@ const PocketPlanCard: React.FC<PocketPlanCardProps> = ({ plans }) => {
           <ChevronRight className="w-3.5 h-3.5" />
         </div>
       </CardHeader>
-      <CardContent className="p-0 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+      <CardContent className="p-0 flex flex-col gap-4 w-full h-full">
         {plans.map((plan, index) => (
           <PocketPlanItem
             key={index}

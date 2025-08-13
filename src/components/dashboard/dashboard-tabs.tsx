@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 // Assuming you have a calendar component - import it if needed
@@ -22,13 +23,13 @@ export function DashboardTabs() {
         >
           Overview
         </Button>
-        <Button
-          variant="ghost"
+        <Link
+          href="/dashboard/chamas"
           className={`rounded-none border-b-2 h-full px-4 sm:px-6 py-[15px] text-center font-manrope text-base font-medium tracking-[-0.02em] ${activeTab === 'chamas' ? 'border-[#31B099] text-white' : 'border-transparent text-[#A2A6AA]'}`}
-          onClick={() => setActiveTab('chamas')}
+
         >
           Chamas
-        </Button>
+        </Link>
         <Button
           variant="ghost"
           className={`rounded-none border-b-2 h-full px-4 sm:px-6 py-[15px] text-center font-manrope text-base font-medium tracking-[-0.02em] ${activeTab === 'settings' ? 'border-[#31B099] text-white' : 'border-transparent text-[#A2A6AA]'}`}

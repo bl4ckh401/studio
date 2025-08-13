@@ -23,7 +23,7 @@ interface RecentActivityCardProps {
 
 export function RecentActivityCard({ activities }: RecentActivityCardProps) {
   return (
-    <InfoCard className="p-6 space-y-6 bg-white rounded-2xl dark:bg-[#2C3542]">
+    <InfoCard className="p-6 space-y-6 bg-white rounded-2xl dark:bg-[#2C3542] shadow-md">
       <CardHeader className="flex w-full flex-row items-center justify-between p-0">
         <div className="flex items-center gap-1.5">
           <CardTitle className="text-lg font-semibold text-[#1A1C1E] dark:text-gray-200">
