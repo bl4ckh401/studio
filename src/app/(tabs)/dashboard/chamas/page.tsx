@@ -8,6 +8,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Edit, Eye, MoreVertical, PlusIcon, Trash2, UserPlus, Users, DollarSign, Landmark } from "lucide-react";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { IncomeAnalysisCard } from "@/components/dashboard/income-analysis-card";
+import { ExpenseAnalysisCard } from "@/components/dashboard/expense-analysis-card";
+import { RecentActivityCard } from "@/components/dashboard/recent-activity-card";
 
 interface Group {
   id: number;
@@ -100,10 +103,17 @@ export default function ChamasGroupsOverviewPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const dummyActivities = [
+      { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">AC</div>, title: "Chama Alpha Deposit", subtitle: "Contribution", amount: "+$50.00", date: "10/05/22 - 10:15" },
+      { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">BF</div>, title: "Investment Circle Payout", subtitle: "Dividend", amount: "+$120.50", date: "10/04/22 - 18:00" },
+      { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">TI</div>, title: "Tech Innovators Loan", subtitle: "Loan Repayment", amount: "-$75.00", date: "10/03/22 - 12:45" },
+      { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">CB</div>, title: "Community Builders Fee", subtitle: "Admin Fee", amount: "-$5.00", date: "10/02/22 - 09:00" },
+      { icon: <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs">SA</div>, title: "Saving Group Alpha", subtitle: "Late Fee", amount: "-$10.00", date: "10/01/22 - 14:30" },
+  ];
+
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        // Dummy data for now - replace with actual API call
         setGroups([
           { id: 1, name: "Saving Group Alpha", status: "Active", members: 10, totalContributions: 15000, totalLoans: 5000 },
           { id: 2, name: "Investment Circle Beta", status: "Inactive", members: 5, totalContributions: 7500, totalLoans: 1200 },
@@ -126,29 +136,56 @@ export default function ChamasGroupsOverviewPage() {
     <div className="flex-grow w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
       <main className="flex-grow w-full relative z-10">
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
-            <div className="mb-8 pt-4">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Groups Overview</h1>
-              <p className="text-muted-foreground">Manage all your investment groups in one place.</p>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 auto-rows-min">
 
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-              <Input placeholder="Search groups..." className="w-full sm:max-w-xs bg-card" />
-              <Button className="flex items-center gap-2 w-full sm:w-auto">
-                <PlusIcon className="h-4 w-4" />
-                Create Group
-              </Button>
-            </div>
-
-            {loading && <div className="text-center text-muted-foreground">Loading groups...</div>}
-            {error && <div className="text-center text-destructive">Error: {error}</div>}
-            
-            {!loading && !error && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {groups.map((group) => (
-                  <ChamaCard key={group.id} group={group} />
-                ))}
+            {/* Main Content: Chamas List */}
+            <div className="flex flex-col gap-6 min-w-0">
+              <div className="mb-8 pt-4">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Groups Overview</h1>
+                <p className="text-muted-foreground">Manage all your investment groups in one place.</p>
               </div>
-            )}
+
+              <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                <Input placeholder="Search groups..." className="w-full sm:max-w-xs bg-card" />
+                <Button className="flex items-center gap-2 w-full sm:w-auto">
+                  <PlusIcon className="h-4 w-4" />
+                  Create Group
+                </Button>
+              </div>
+
+              {loading && <div className="text-center text-muted-foreground">Loading groups...</div>}
+              {error && <div className="text-center text-destructive">Error: {error}</div>}
+              
+              {!loading && !error && (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {groups.map((group) => (
+                    <ChamaCard key={group.id} group={group} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar: Analytics */}
+            <div className="flex flex-col gap-6 min-w-0 lg:pt-32">
+                <IncomeAnalysisCard
+                    title="Total Contributions"
+                    metric="$82,500"
+                    percentageChange="+5.2%"
+                    timePeriod="This Month"
+                    changeType="increase"
+                    changeAmount="$4,100"
+                />
+                <ExpenseAnalysisCard
+                    title="Total Loans"
+                    metric="$32,200"
+                    percentageChange="+12.5%"
+                    timePeriod="This Month"
+                    changeType="increase"
+                />
+                 <RecentActivityCard activities={dummyActivities} />
+            </div>
+
+          </div>
         </div>
       </main>
        <footer className="w-full p-4 text-center text-xs text-muted-foreground">

@@ -27,13 +27,13 @@ export function ExpenseAnalysisCard({ title, metric, percentageChange, timePerio
   const badgeBgColor = changeType === 'increase' ? 'bg-[#D6FBE6]' : 'bg-[#F9C6BF]';
   const badgeTextColor = changeType === 'increase' ? 'text-[#31B099]' : 'text-[#C65468]';
   const arrowIcon = changeType === 'increase' ? <ArrowUpIcon className="h-3 w-3" /> : <ArrowDownIcon className="h-3 w-3" />;
-  const lineColor = '#C65468';
+  const lineColor = changeType === 'increase' ? '#31B099' : '#C65468';
   const changeAmountColor = changeType === 'increase' ? 'text-[#31B099]' : 'text-[#C65468]';
 
 
   return (
-    <div className="flex flex-col lg:flex-row items-start p-6 gap-9 bg-white dark:bg-[#2C3542] rounded-2xl w-full lg:w-[556px] lg:h-auto">
-      <div className="flex flex-col items-start p-0 gap-4 w-full lg:w-[295px]">
+    <div className="flex flex-col lg:flex-row items-start p-6 gap-9 bg-white dark:bg-[#2C3542] rounded-2xl w-full">
+      <div className="flex flex-col items-start p-0 gap-4 w-full">
         <div className="flex flex-row items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
                 <h3 className="font-manrope text-lg font-semibold tracking-[-0.02em] text-[#1A1C1E] dark:text-white">{title}</h3>
@@ -79,10 +79,11 @@ export function ExpenseAnalysisCard({ title, metric, percentageChange, timePerio
             <YAxis axisLine={false} tickLine={false} stroke="#ACB5BB" fontSize={12} tickFormatter={(value) => `${value / 1000}k`} />
             <Tooltip
                 contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #ccc',
+                    backgroundColor: 'var(--background)',
+                    border: '1px solid var(--border)',
                     borderRadius: '8px',
-                    fontFamily: 'Manrope'
+                    fontFamily: 'Manrope',
+                    color: 'var(--foreground)'
                 }}
             />
             <Area type="monotone" dataKey="expenses" stroke={lineColor} strokeWidth={3} fillOpacity={1} fill="url(#colorExpense)" dot={{ r: 0 }} activeDot={{ r: 6, stroke: 'white', strokeWidth: 2, fill: lineColor }} />
