@@ -1,3 +1,4 @@
+// app/dashboard/chamas/[id]/page.tsx
 "use client";
 
 import { useState } from 'react';
@@ -5,11 +6,10 @@ import { useParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  LayoutDashboard, Users, Landmark, ArrowDown, ArrowUp,
+import { 
+  LayoutDashboard, Users, Landmark, ArrowDown, ArrowUp, 
   Calendar, HandCoins, CircleDollarSign, Target, Settings,
-  BarChart as BarChartIcon, PieChart as PieChartIcon, LineChart as LineChartIcon,
-  ChevronRight, Plus, MoreVertical
+  BarChart, PieChart, LineChart, ChevronRight, Plus, MoreVertical
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
@@ -19,13 +19,14 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 export default function IndividualChamaPage() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
-
+  
   // Mock data for the chama group
   const chamaData = {
     id: id,
     name: "Saving Group Alpha",
     status: "Active",
     totalValue: 245680,
+    membersCount: 10,
     contributions: 15000,
     expenses: 5000,
     loans: 12000,
@@ -103,9 +104,9 @@ export default function IndividualChamaPage() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
             <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 gap-2 overflow-x-auto">
               {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
+                <TabsTrigger 
+                  key={tab.id} 
+                  value={tab.id} 
                   className="flex items-center gap-2 py-2 text-xs sm:text-sm"
                 >
                   {tab.icon}
@@ -126,7 +127,7 @@ export default function IndividualChamaPage() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <BarChartIcon className="h-5 w-5" />
+                        <BarChart className="h-5 w-5" />
                         Financial Overview
                       </CardTitle>
                     </CardHeader>
@@ -149,7 +150,7 @@ export default function IndividualChamaPage() {
                           <div className="text-xl font-bold">{formatCurrency(chamaData.loans)}</div>
                         </div>
                       </div>
-
+                      
                       {/* Contribution vs Expenses Chart */}
                       <div className="mt-6">
                         <div className="flex items-center justify-between mb-4">
@@ -166,7 +167,7 @@ export default function IndividualChamaPage() {
                           </div>
                         </div>
                         <div className="h-64 bg-gray-50 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                          <LineChartIcon className="h-10 w-10 text-muted-foreground" />
+                          <LineChart className="h-10 w-10 text-muted-foreground" />
                           <span className="ml-2 text-muted-foreground">Monthly Contribution vs Expense Chart</span>
                         </div>
                       </div>
@@ -284,7 +285,7 @@ export default function IndividualChamaPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {chamaData.members.slice(0, 3).map((member) => (
+                      {chamaData.members.slice(0, 3).map((member, index) => (
                         <div key={member.id} className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <Avatar>
@@ -319,7 +320,7 @@ export default function IndividualChamaPage() {
                     Add Member
                   </Button>
                 </div>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {chamaData.members.map(member => (
                     <Card key={member.id} className="flex flex-col">
@@ -373,7 +374,7 @@ export default function IndividualChamaPage() {
                     </Button>
                   </div>
                 </div>
-
+                
                 <Card>
                   <CardHeader>
                     <CardTitle>Contribution History</CardTitle>
@@ -390,11 +391,11 @@ export default function IndividualChamaPage() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {[1, 2, 3, 4, 5].map((id) => (
-                          <TableRow key={id}>
-                            <TableCell>2023-10-{15 - id}</TableCell>
-                            <TableCell>Member {id}</TableCell>
-                            <TableCell className="text-green-500">{formatCurrency(500 + id * 100)}</TableCell>
+                        {chamaData.recentTransactions.map((tx) => (
+                          <TableRow key={tx.id}>
+                            <TableCell>{tx.date}</TableCell>
+                            <TableCell>{tx.member}</TableCell>
+                            <TableCell className="text-green-500">{formatCurrency(tx.amount)}</TableCell>
                             <TableCell>M-Pesa</TableCell>
                             <TableCell className="text-right">
                               <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">
@@ -413,103 +414,18 @@ export default function IndividualChamaPage() {
               </div>
             )}
 
-            {/* Income Tab */}
-            {activeTab === 'income' && (
+            {/* Placeholder for other tabs */}
+            {activeTab !== 'overview' && activeTab !== 'members' && activeTab !== 'contributions' && (
               <div className="flex flex-col items-center justify-center py-12">
                 <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <ArrowUp className="h-10 w-10 text-muted-foreground" />
+                  {tabs.find(t => t.id === activeTab)?.icon}
                 </div>
-                <h2 className="text-xl font-bold mb-2">Income Dashboard</h2>
+                <h2 className="text-xl font-bold mb-2">{tabs.find(t => t.id === activeTab)?.label} Dashboard</h2>
                 <p className="text-muted-foreground mb-6 text-center">
-                  Track all group income sources, including contributions, loan repayments, and investments.
+                  This section is under development. You'll be able to manage all {activeTab.toLowerCase()} here.
                 </p>
                 <Button>
-                  Explore Income Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
-
-            {/* Loans Tab */}
-            {activeTab === 'loans' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <HandCoins className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h2 className="text-xl font-bold mb-2">Loans Management</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  Manage group loans, track repayments, and monitor outstanding balances.
-                </p>
-                <Button>
-                  Explore Loan Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
-
-            {/* Expenses Tab */}
-            {activeTab === 'expenses' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <ArrowDown className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h2 className="text-xl font-bold mb-2">Expense Tracking</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  Record and categorize group expenses, generate reports, and manage budgets.
-                </p>
-                <Button>
-                  Explore Expense Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
-
-            {/* Fines Tab */}
-            {activeTab === 'fines' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <CircleDollarSign className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h2 className="text-xl font-bold mb-2">Fines Management</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  Track and manage member fines for late payments or other violations.
-                </p>
-                <Button>
-                  Explore Fines Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
-
-            {/* Goals Tab */}
-            {activeTab === 'goals' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <Target className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h2 className="text-xl font-bold mb-2">Group Goals</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  Set and track financial goals for your group, monitor progress, and celebrate achievements.
-                </p>
-                <Button>
-                  Explore Goal Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
-
-            {/* Settings Tab */}
-            {activeTab === 'settings' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  <Settings className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h2 className="text-xl font-bold mb-2">Group Settings</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  Configure your group settings, manage permissions, and customize your chama experience.
-                </p>
-                <Button>
-                  Explore Settings
+                  Explore Features
                   <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
