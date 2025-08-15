@@ -1,3 +1,4 @@
+
 // app/dashboard/chamas/[id]/page.tsx
 "use client";
 
@@ -9,12 +10,19 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { 
   LayoutDashboard, Users, Landmark, ArrowDown, ArrowUp, 
   Calendar, HandCoins, CircleDollarSign, Target, Settings,
-  BarChart, PieChart, LineChart, ChevronRight, Plus, MoreVertical
+  BarChart, PieChart, LineChart, ChevronRight, Plus, MoreVertical, Search
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function IndividualChamaPage() {
   const { id } = useParams();
@@ -61,6 +69,29 @@ export default function IndividualChamaPage() {
       { month: "May", contributions: 16000, expenses: 4800 },
       { month: "Jun", contributions: 17000, expenses: 5200 },
       { month: "Jul", contributions: 18000, expenses: 5500 },
+    ],
+     recentIncome: [
+      { id: 1, source: "Monthly Contributions", amount: 15000, date: "2023-10-01" },
+      { id: 2, source: "Loan Repayment - S. Williams", amount: 1050, date: "2023-10-05" },
+      { id: 3, source: "Late Payment Fines", amount: 300, date: "2023-10-07" },
+      { id: 4, source: "Investment Dividends", amount: 1200, date: "2023-10-10" },
+    ],
+    loansData: [
+      { id: 1, member: "Michael Brown", amount: 5000, interestRate: 5, status: "Active", dueDate: "2024-03-18", disbursedDate: "2023-09-18" },
+      { id: 2, member: "Sarah Williams", amount: 3000, interestRate: 5, status: "Paid", dueDate: "2023-10-05", disbursedDate: "2023-07-05" },
+      { id: 3, member: "John Doe", amount: 7000, interestRate: 4.5, status: "Active", dueDate: "2024-05-20", disbursedDate: "2023-11-20" },
+      { id: 4, member: "Robert Johnson", amount: 2500, interestRate: 5, status: "Overdue", dueDate: "2023-09-30", disbursedDate: "2023-06-30" },
+    ],
+    expensesData: [
+      { id: 1, item: "Office Supplies", category: "Admin", amount: 350, date: "2023-10-02" },
+      { id: 2, item: "Community Hall Rental", category: "Meeting", amount: 1500, date: "2023-10-05" },
+      { id: 3, item: "Bank Transaction Fees", category: "Finance", amount: 120, date: "2023-10-15" },
+      { id: 4, item: "Refreshments for Meeting", category: "Meeting", amount: 250, date: "2023-10-05" },
+    ],
+    finesData: [
+      { id: 1, member: "Michael Brown", reason: "Late Contribution", amount: 100, date: "2023-10-06", status: "Paid" },
+      { id: 2, member: "Robert Johnson", reason: "Missed Meeting", amount: 50, date: "2023-10-05", status: "Unpaid" },
+      { id: 3, member: "Jane Smith", reason: "Late Contribution", amount: 100, date: "2023-09-06", status: "Paid" },
     ]
   };
 
@@ -80,8 +111,8 @@ export default function IndividualChamaPage() {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     }).format(amount);
   };
 
@@ -380,32 +411,34 @@ export default function IndividualChamaPage() {
                     <CardTitle>Contribution History</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Member</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Payment Method</TableHead>
-                          <TableHead className="text-right">Status</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {chamaData.recentTransactions.map((tx) => (
-                          <TableRow key={tx.id}>
-                            <TableCell>{tx.date}</TableCell>
-                            <TableCell>{tx.member}</TableCell>
-                            <TableCell className="text-green-500">{formatCurrency(tx.amount)}</TableCell>
-                            <TableCell>M-Pesa</TableCell>
-                            <TableCell className="text-right">
-                              <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">
-                                Completed
-                              </span>
-                            </TableCell>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Member</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Payment Method</TableHead>
+                            <TableHead className="text-right">Status</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {chamaData.recentTransactions.map((tx) => (
+                            <TableRow key={tx.id}>
+                              <TableCell>{tx.date}</TableCell>
+                              <TableCell>{tx.member}</TableCell>
+                              <TableCell className="text-green-500">{formatCurrency(tx.amount)}</TableCell>
+                              <TableCell>M-Pesa</TableCell>
+                              <TableCell className="text-right">
+                                <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">
+                                  Completed
+                                </span>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </CardContent>
                   <CardFooter className="justify-center">
                     <Button variant="ghost">Load More</Button>
@@ -414,8 +447,247 @@ export default function IndividualChamaPage() {
               </div>
             )}
 
+            {/* Income Tab */}
+            {activeTab === 'income' && (
+               <div>
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                  <h2 className="text-xl font-bold">Income Records</h2>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <div className="relative w-full sm:w-auto">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input placeholder="Search income..." className="pl-10 max-w-xs" />
+                    </div>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Income
+                    </Button>
+                  </div>
+                </div>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Income History</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Source</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {chamaData.recentIncome.map((income) => (
+                            <TableRow key={income.id}>
+                              <TableCell>{income.date}</TableCell>
+                              <TableCell className="font-medium">{income.source}</TableCell>
+                              <TableCell className="text-right text-green-500">{formatCurrency(income.amount)}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                   <CardFooter className="justify-center">
+                    <Button variant="ghost">Load More</Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+
+            {/* Loans Tab */}
+            {activeTab === 'loans' && (
+              <div>
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                  <h2 className="text-xl font-bold">Loan Management</h2>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <div className="relative w-full sm:w-auto">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input placeholder="Search loans..." className="pl-10 max-w-xs" />
+                    </div>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Loan
+                    </Button>
+                  </div>
+                </div>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Loan Portfolio</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Member</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Interest</TableHead>
+                            <TableHead>Disbursed</TableHead>
+                            <TableHead>Due Date</TableHead>
+                            <TableHead className="text-center">Status</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {chamaData.loansData.map((loan) => (
+                            <TableRow key={loan.id}>
+                              <TableCell className="font-medium">{loan.member}</TableCell>
+                              <TableCell>{formatCurrency(loan.amount)}</TableCell>
+                              <TableCell>{loan.interestRate}%</TableCell>
+                              <TableCell>{loan.disbursedDate}</TableCell>
+                              <TableCell>{loan.dueDate}</TableCell>
+                              <TableCell className="text-center">
+                                <Badge variant={loan.status === 'Active' ? 'default' : loan.status === 'Paid' ? 'secondary' : 'destructive'} 
+                                className={
+                                  loan.status === 'Active' ? 'bg-blue-500' : 
+                                  loan.status === 'Paid' ? 'bg-green-500' : 'bg-red-500'
+                                }
+                                >
+                                  {loan.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <Button variant="ghost" size="icon">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                   <CardFooter className="justify-center">
+                    <Button variant="ghost">Load More</Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+
+            {/* Expenses Tab */}
+            {activeTab === 'expenses' && (
+              <div>
+                 <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                  <h2 className="text-xl font-bold">Expense Tracking</h2>
+                   <div className="flex gap-2 w-full sm:w-auto">
+                     <div className="relative w-full sm:w-auto">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input placeholder="Search expenses..." className="pl-10 max-w-xs" />
+                    </div>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Expense
+                    </Button>
+                  </div>
+                </div>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Expense History</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                     <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Item</TableHead>
+                            <TableHead>Category</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {chamaData.expensesData.map((expense) => (
+                            <TableRow key={expense.id}>
+                              <TableCell>{expense.date}</TableCell>
+                              <TableCell className="font-medium">{expense.item}</TableCell>
+                              <TableCell>{expense.category}</TableCell>
+                              <TableCell className="text-right text-red-500">{formatCurrency(expense.amount)}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                   <CardFooter className="justify-center">
+                    <Button variant="ghost">Load More</Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+
+            {/* Fines Tab */}
+            {activeTab === 'fines' && (
+               <div>
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                  <h2 className="text-xl font-bold">Fines Management</h2>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <div className="relative w-full sm:w-auto">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input placeholder="Search fines..." className="pl-10 max-w-xs" />
+                    </div>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Record Fine
+                    </Button>
+                  </div>
+                </div>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Fines History</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Member</TableHead>
+                            <TableHead>Reason</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead className="text-center">Status</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {chamaData.finesData.map((fine) => (
+                            <TableRow key={fine.id}>
+                              <TableCell>{fine.date}</TableCell>
+                              <TableCell className="font-medium">{fine.member}</TableCell>
+                              <TableCell>{fine.reason}</TableCell>
+                              <TableCell>{formatCurrency(fine.amount)}</TableCell>
+                              <TableCell className="text-center">
+                                <Badge variant={fine.status === 'Paid' ? 'secondary' : 'destructive'}
+                                  className={fine.status === 'Paid' ? 'bg-green-500' : 'bg-yellow-500'}
+                                >
+                                  {fine.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <Button variant="ghost" size="icon">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                   <CardFooter className="justify-center">
+                    <Button variant="ghost">Load More</Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+
             {/* Placeholder for other tabs */}
-            {activeTab !== 'overview' && activeTab !== 'members' && activeTab !== 'contributions' && (
+            {activeTab !== 'overview' && activeTab !== 'members' && activeTab !== 'contributions' && activeTab !== 'income' && activeTab !== 'loans' && activeTab !== 'expenses' && activeTab !== 'fines' && (
               <div className="flex flex-col items-center justify-center py-12">
                 <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
                   {tabs.find(t => t.id === activeTab)?.icon}
@@ -439,3 +711,4 @@ export default function IndividualChamaPage() {
     </div>
   );
 }
+
