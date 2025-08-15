@@ -117,23 +117,13 @@ export default function IndividualChamaPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
+    <>
       <main className="flex-grow w-full relative z-10">
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{chamaData.name}</h1>
-            <div className="flex items-center gap-2 mt-2">
-              <div className={`h-2.5 w-2.5 rounded-full ${chamaData.status === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              <span className="text-muted-foreground">{chamaData.status} Group</span>
-              <span className="text-muted-foreground">•</span>
-              <span className="text-muted-foreground">{chamaData.members.length} members</span>
-            </div>
-          </div>
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6 lg:-mt-48">
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-            <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 gap-2 overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 gap-2 overflow-x-auto overflow-y-hidden">
               {tabs.map((tab) => (
                 <TabsTrigger 
                   key={tab.id} 
@@ -708,7 +698,7 @@ export default function IndividualChamaPage() {
       <footer className="w-full p-4 text-center text-xs text-muted-foreground">
         © 2025 Chama Connect. All rights reserved.
       </footer>
-    </div>
+    </>
   );
 }
 

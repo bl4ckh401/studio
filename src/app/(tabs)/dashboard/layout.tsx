@@ -34,7 +34,7 @@ export default function RootLayout({
                     <DashboardTabs />
                 </div>
             </div>
-                <main className="flex-1 md:mt-16">{children}</main>
+            <main className="flex-1 md:mt-16">{children}</main>
 
             </body>
         </html>

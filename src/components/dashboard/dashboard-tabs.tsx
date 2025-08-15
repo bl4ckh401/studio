@@ -30,13 +30,6 @@ export function DashboardTabs() {
         >
           Chamas
         </Link>
-        <Button
-          variant="ghost"
-          className={`rounded-none border-b-2 h-full px-4 sm:px-6 py-[15px] text-center font-manrope text-base font-medium tracking-[-0.02em] ${activeTab === 'settings' ? 'border-[#31B099] text-white' : 'border-transparent text-[#A2A6AA]'}`}
-          onClick={() => setActiveTab('settings')}
-        >
-          Settings
-        </Button>
       </div>
 
       {/* Date */}

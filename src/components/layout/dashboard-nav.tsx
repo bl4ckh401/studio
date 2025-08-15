@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/logo"; // Assuming you have a Logo component
-import { ThemeToggle } from "@/components/theme-toggle"; // Assuming you have a ThemeToggle component
+import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchIcon, BellIcon, MessageSquare } from "lucide-react";
 import Image from 'next/image';
+import { NotificationPopup } from '@/components/dashboard/notification-popup';
 
 export function DashboardNav() {
   return (
@@ -23,9 +24,7 @@ export function DashboardNav() {
           <SearchIcon className="h-6 w-6 text-[#A2A6AA]" />
           <Input placeholder="Search anything here" className="bg-transparent border-none text-white placeholder:text-[rgba(255,255,255,0.5)] focus-visible:ring-0 focus-visible:ring-offset-0 text-sm h-auto py-0" />
         </div>
-        <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
-          <BellIcon className="h-6 w-6 text-white" />
-        </Button>
+        <NotificationPopup />
          <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
           <MessageSquare className="h-6 w-6 text-white" />
         </Button>
