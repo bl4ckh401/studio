@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import { DashboardNav } from "@/components/layout/dashboard-nav"
 import { ChevronRightIcon } from "lucide-react"
 import { DashboardTabs } from "@/components/dashboard/dashboard-tabs"
+import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,13 +32,18 @@ export default function RootLayout({
                             <span className="text-white font-semibold">Overview</span>
                         </div>
                     </div>
-                    <DashboardTabs />
+                    <Suspense>
+                     <DashboardTabs />
+                    </Suspense>
                 </div>
             </div>
-            <main className="flex-1 md:mt-16">{children}</main>
+            <main className="flex-1 md:-mt-16">
+              <Suspense>
+                {children}
+              </Suspense>
+            </main>
 
             </body>
         </html>
     )
 }
-
