@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -8,7 +9,7 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { BellIcon, MoneyRecive, MoneySend } from "lucide-react";
+import { BellIcon, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
 const notifications = [
   {
@@ -16,28 +17,28 @@ const notifications = [
     message: "You have successfully sent johnatan $10.00",
     time: "2m",
     read: false,
-    icon: <MoneySend className="h-6 w-6 text-blue-500" />
+    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
   },
   {
     type: "Transfer Success",
     message: "You have successfully sent Startbucks $10.00",
     time: "30m",
     read: false,
-    icon: <MoneySend className="h-6 w-6 text-blue-500" />
+    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
   },
   {
     type: "Receive $100.00",
     message: "You received a payment from Fiver Inter of $100.00",
     time: "3h",
     read: true,
-    icon: <MoneyRecive className="h-6 w-6 text-green-500" />
+    icon: <ArrowDownCircle className="h-6 w-6 text-green-500" />
   },
     {
     type: "Receive $200.00",
     message: "You received a payment from Upwork of $200.00",
     time: "4h",
     read: true,
-    icon: <MoneyRecive className="h-6 w-6 text-green-500" />
+    icon: <ArrowDownCircle className="h-6 w-6 text-green-500" />
   },
 ];
 
