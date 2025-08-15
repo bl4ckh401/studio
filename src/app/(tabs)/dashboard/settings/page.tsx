@@ -44,7 +44,7 @@ export default function SettingsPage() {
 
   return (
     <div className="flex justify-center w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
-      <main className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 -mt-20">
+      <main className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8">
           {/* Left Sidebar */}
           <div className="flex flex-col gap-4">

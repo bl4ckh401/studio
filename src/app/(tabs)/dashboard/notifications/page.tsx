@@ -70,7 +70,7 @@ export default function NotificationsPage() {
   return (
     <div className="w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
        <main className="flex-grow w-full relative z-10">
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 mt-6">
           <Card className="bg-white dark:bg-[#2C3542] rounded-2xl p-6 shadow-md">
             <CardContent className="p-0">
               <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">

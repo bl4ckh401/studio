@@ -11,6 +11,8 @@ import { CurrencyCard } from "@/components/dashboard/currency-card";
 import { IncomeAnalysisCard } from "@/components/dashboard/income-analysis-card";
 import { ExpenseAnalysisCard } from "@/components/dashboard/expense-analysis-card";
 import { ExpenseCategoryCard } from '@/components/dashboard/expense-category-card';
+import { DashboardTabs } from "@/components/dashboard/dashboard-tabs"
+
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -75,8 +77,13 @@ export default function DashboardPage() {
 
     return (
         <div className="flex flex-col min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
+             <div className="w-full bg-[#1C2634] dark:bg-[#2C3542] pb-32 -mt-16">
+                 <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-24 lg:px-10 xl:px-20">
+                    <DashboardTabs />
+                 </div>
+            </div>
             <main className="flex-grow w-full relative z-10">
-                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-44">
                     {tab === 'overview' && (
                         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr_1fr] gap-6 auto-rows-min">
                             {/* Column 1 */}
