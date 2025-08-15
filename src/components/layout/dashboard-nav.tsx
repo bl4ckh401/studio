@@ -25,19 +25,16 @@ export function DashboardNav() {
           <Input placeholder="Search anything here" className="bg-transparent border-none text-white placeholder:text-[rgba(255,255,255,0.5)] focus-visible:ring-0 focus-visible:ring-offset-0 text-sm h-auto py-0" />
         </div>
         <NotificationPopup />
-         <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
+        <Button variant="ghost" className="p-2 bg-[rgba(255,255,255,0.07)] rounded-full h-12 w-12 flex items-center justify-center">
           <MessageSquare className="h-6 w-6 text-white" />
         </Button>
-         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#2C3542]">
-            <Image
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cfc37cda?auto=format&fit=crop&q=80&w=2980&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Profile Picture"
-              width={48}
-              height={48}
-              className="object-cover w-full h-full"
-            />
-          </div>
-          <ThemeToggle />
+        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#2C3542]">
+          <img
+            src="https://api.dicebear.com/9.x/adventurer/svg?seed=Ryan"
+            alt="avatar" />
+
+        </div>
+        <ThemeToggle />
       </div>
     </nav>
   );

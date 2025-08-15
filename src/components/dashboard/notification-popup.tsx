@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { BellIcon, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import Link from "next/link";
 
 const notifications = [
   {
@@ -85,8 +86,10 @@ export function NotificationPopup() {
         
         <DropdownMenuSeparator className="my-6 bg-border" />
 
-        <Button variant="outline" className="w-full h-12">
-          View all notifications
+        <Button asChild variant="outline" className="w-full h-12">
+          <Link href="/dashboard/notifications">
+            View all notifications
+          </Link>
         </Button>
       </DropdownMenuContent>
     </DropdownMenu>
