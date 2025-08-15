@@ -33,7 +33,7 @@ export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod
   const changeAmountColor = changeType === 'increase' ? 'text-[#31B099]' : 'text-red-500';
 
   return (
-    <div className="flex flex-row items-start p-6 gap-9 bg-white dark:bg-[#2C3542] rounded-2xl w-full lg:w-[556px] lg:h-[191px]">
+    <div className="flex flex-col lg:flex-row items-start p-6 gap-9 bg-white dark:bg-[#2C3542] rounded-2xl w-full">
       <div className="flex flex-col items-start p-0 gap-4 w-full lg:w-[292px]">
         <div className="flex flex-row items-center justify-between w-full">
             <div className="flex items-center gap-1.5">
@@ -54,13 +54,13 @@ export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod
           </div>
         </div>
         
-        <div className="flex flex-row items-center p-0 gap-1">
+        {/* <div className="flex flex-row items-center p-0 gap-1">
             <p className="text-base font-medium font-manrope text-[#1A1C1E] dark:text-white tracking-[-0.02em]">Income increased by</p>
             <div className="flex justify-center items-center px-1 py-0.5 rounded-md">
               <span className={`text-base font-semibold font-manrope ${changeAmountColor} tracking-[-0.02em]`}>{changeAmount}</span>
             </div>
              <p className="text-base font-medium font-manrope text-[#1A1C1E] dark:text-white tracking-[-0.02em]">{timePeriod}</p>
-        </div>
+        </div> */}
       </div>
 
       <div className="w-[180px] h-[143px] hidden lg:block">

@@ -25,7 +25,7 @@ const totalValue = dummyExpenseData.reduce((sum, item) => sum + item.value, 0);
 
 export function ExpenseCategoryCard() {
   return (
-    <div className="bg-white dark:bg-[#2C3542] rounded-2xl p-6 flex flex-col gap-6 w-full lg:w-[554px] lg:h-auto lg:h-[289px]">
+    <div className="bg-white dark:bg-[#2C3542] rounded-2xl p-6 flex flex-col gap-6 w-full lg:w-full lg:h-auto">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-1.5">
           <h2 className="font-manrope text-lg font-semibold text-[#1A1C1E] dark:text-white tracking-[-0.02em]">Expense Category</h2>

@@ -10,8 +10,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { 
   LayoutDashboard, Users, Landmark, ArrowDown, ArrowUp, 
   Calendar, HandCoins, CircleDollarSign, Target, Settings,
-  BarChart, PieChart, LineChart, ChevronRight, Plus, MoreVertical, Search
+  BarChart, PieChart, LineChart as LucideLineChart, ChevronRight, Plus, MoreVertical, Search
 } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
@@ -119,7 +120,7 @@ export default function IndividualChamaPage() {
   return (
     <>
       <main className="flex-grow w-full relative z-10">
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6 lg:-mt-48">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6 lg:-mt-28">
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
@@ -138,7 +139,7 @@ export default function IndividualChamaPage() {
           </Tabs>
 
           {/* Tab Content */}
-          <div className="bg-white dark:bg-[#2C3542] rounded-2xl p-6 shadow-md">
+          <>
             {/* Overview Tab */}
             {activeTab === 'overview' && (
               <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
@@ -174,22 +175,27 @@ export default function IndividualChamaPage() {
                       
                       {/* Contribution vs Expenses Chart */}
                       <div className="mt-6">
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-semibold">Contributions vs Expenses</h3>
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                              <div className="h-3 w-3 bg-[#3B82F6] rounded-full"></div>
-                              <span className="text-sm">Contributions</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="h-3 w-3 bg-[#EF4444] rounded-full"></div>
-                              <span className="text-sm">Expenses</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="h-64 bg-gray-50 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                          <LineChart className="h-10 w-10 text-muted-foreground" />
-                          <span className="ml-2 text-muted-foreground">Monthly Contribution vs Expense Chart</span>
+                        <h3 className="font-semibold mb-4">Contributions vs Expenses</h3>
+                        <div className="h-64">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                              data={chamaData.financialData}
+                              margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="month" />
+                              <YAxis />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: 'hsl(var(--background))',
+                                  border: '1px solid hsl(var(--border))',
+                                }}
+                              />
+                              <Legend />
+                              <Line type="monotone" dataKey="contributions" stroke="#3B82F6" strokeWidth={2} name="Contributions" />
+                              <Line type="monotone" dataKey="expenses" stroke="#EF4444" strokeWidth={2} name="Expenses" />
+                            </LineChart>
+                          </ResponsiveContainer>
                         </div>
                       </div>
                     </CardContent>
@@ -692,7 +698,7 @@ export default function IndividualChamaPage() {
                 </Button>
               </div>
             )}
-          </div>
+          </>
         </div>
       </main>
       <footer className="w-full p-4 text-center text-xs text-muted-foreground">

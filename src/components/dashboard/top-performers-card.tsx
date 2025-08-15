@@ -14,7 +14,7 @@ export function TopPerformersCard() {
   ];
 
   return (
-    <Card className="bg-white dark:bg-[#2C3542] rounded-2xl h-full">
+    <Card className="bg-white dark:bg-[#2C3542] rounded-2xl">
       <CardHeader>
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <Medal className="h-5 w-5 text-yellow-500" />

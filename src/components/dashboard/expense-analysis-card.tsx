@@ -53,13 +53,13 @@ export function ExpenseAnalysisCard({ title, metric, percentageChange, timePerio
           </div>
         </div>
         
-        <div className="flex flex-row items-center p-0 gap-1 flex-wrap">
+        {/* <div className="flex flex-row items-center p-0 gap-1 flex-wrap">
             <p className="text-base font-medium font-manrope text-[#1A1C1E] dark:text-white tracking-[-0.02em]">Expense increased by</p>
             <div className="flex justify-center items-center px-1 py-0.5 rounded-md">
               <span className={`text-base font-semibold font-manrope ${changeAmountColor} tracking-[-0.02em]`}>$1.456</span>
             </div>
              <p className="text-base font-medium font-manrope text-[#1A1C1E] dark:text-white tracking-[-0.02em]">{timePeriod}</p>
-        </div>
+        </div> */}
       </div>
 
       <div className="w-full lg:w-[177px] h-[140px]">
