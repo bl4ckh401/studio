@@ -83,7 +83,7 @@ export default function DashboardPage() {
                  </div>
             </div>
             <main className="flex-grow w-full relative z-10">
-                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-44">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 -mt-20">
                     {tab === 'overview' && (
                         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr_1fr] gap-6 auto-rows-min">
                             {/* Column 1 */}
