@@ -27,6 +27,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 const signUpSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
@@ -61,9 +63,20 @@ export default function SignUpPage() {
   });
 
   function onSubmit(values: z.infer<typeof signUpSchema>) {
-    console.log(values);
-    // Submit logic here
+    setSubmitting(true);
+    signup({
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phone: values.phone,
+      password: values.password,
+    }).catch(() => {
+      // errors are shown inside useAuth
+    }).finally(() => setSubmitting(false));
   }
+
+  const { signup } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-background">

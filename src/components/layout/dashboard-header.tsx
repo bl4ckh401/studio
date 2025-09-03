@@ -4,7 +4,8 @@
 import { usePathname } from 'next/navigation';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 const BreadcrumbItem = ({ href, children, isLast }: { href?: string, children: React.ReactNode, isLast: boolean }) => (
   <div className="flex items-center gap-2">
@@ -25,6 +26,12 @@ const BreadcrumbItem = ({ href, children, isLast }: { href?: string, children: R
 
 export function DashboardHeader() {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const breadcrumbs = useMemo(() => {
     const pathSegments = pathname.split('/').filter(segment => segment);
@@ -55,7 +62,13 @@ export function DashboardHeader() {
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-20">
         <div className="flex flex-col gap-3 py-6">
           <h1 className="text-white text-2xl font-manrope font-semibold tracking-[-0.03em]">
-            Welcome back, Osborne Ozzy👏🏻
+            Welcome back,
+            {mounted ? (
+              <span> {user?.firstName ?? 'friend'} {user?.lastName ?? ''}</span>
+            ) : (
+              <span> friend</span>
+            )}
+            
           </h1>
           <div className="flex items-center gap-2">
             {breadcrumbs.map((crumb, index) => (

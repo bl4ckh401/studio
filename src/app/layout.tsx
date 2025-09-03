@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { LoadingProvider } from "@/context/LoadingContext";
+import { AuthProvider } from "@/hooks/useAuth";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chama Connect",
@@ -26,9 +31,13 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">
-        {children}
-        <Toaster />
+      <body className={`${inter.className} antialiased`}>
+        <LoadingProvider>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

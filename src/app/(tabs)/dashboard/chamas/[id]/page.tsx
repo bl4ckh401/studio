@@ -1,134 +1,527 @@
-
-// app/dashboard/chamas/[id]/page.tsx
 "use client";
 
-import { useState } from 'react';
-import { useParams } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { 
-  LayoutDashboard, Users, Landmark, ArrowDown, ArrowUp, 
-  Calendar, HandCoins, CircleDollarSign, Target, Settings,
-  BarChart, PieChart, LineChart as LucideLineChart, ChevronRight, Plus, MoreVertical, Search
-} from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LayoutDashboard,
+  Users,
+  Landmark,
+  ArrowDown,
+  ArrowUp,
+  Calendar,
+  HandCoins,
+  CircleDollarSign,
+  Target,
+  Settings,
+  BarChart,
+  PieChart,
+  LineChart as LucideLineChart,
+  ChevronRight,
+  Plus,
+  MoreVertical,
+  Search,
+} from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { useGroup } from "@/hooks/use-group";
+import { useReports } from "@/hooks/use-reports";
+import { useTransaction } from "@/hooks/use-transaction";
+import { TransactionType } from "@/app/types/api";
+import { useGoals } from "@/hooks/use-goals";
+import { useCommunication } from "@/hooks/use-communication";
+import { useFineRule } from "@/hooks/use-fine-rule";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from '@/components/ui/badge';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import DocumentList from "@/components/groups/DocumentList";
+import PolicyList from "@/components/groups/PolicyList";
+import UploadDocumentModal from "@/components/groups/UploadDocumentModal";
+import CreatePolicyModal from "@/components/groups/CreatePolicyModal";
+import GroupClosureModal from "@/components/groups/GroupClosureModal";
+import MakeContribution from "@/components/groups/MakeContribution";
+import ContributionsTab from "@/components/groups/ContributionsTab";
+import IncomeTab from "@/components/groups/IncomeTab";
+import LoansTab from "@/components/groups/LoansTab";
+import ExpensesTab from "@/components/groups/ExpensesTab";
+import MembersTab from "@/components/groups/MembersTab";
+import FinesTab from "@/components/groups/FinesTab";
+import GoalsTab from "@/components/groups/GoalsTab";
+import { getMemberDisplay } from "@/components/groups/TransactionColumns";
+import TransactionApprovalActions from "@/components/groups/TransactionApprovalActions";
+import { formatCurrency, formatDateWithTime } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function IndividualChamaPage() {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState('overview');
-  
-  // Mock data for the chama group
-  const chamaData = {
-    id: id,
-    name: "Saving Group Alpha",
-    status: "Active",
-    totalValue: 245680,
-    membersCount: 10,
-    contributions: 15000,
-    expenses: 5000,
-    loans: 12000,
-    fines: 1200,
-    goals: [
-      { id: 1, name: "New Office Space", target: 50000, current: 24500, deadline: "2024-12-31" },
-      { id: 2, name: "Community Project", target: 20000, current: 8000, deadline: "2024-09-30" }
-    ],
-    recentTransactions: [
-      { id: 1, member: "Jane Smith", amount: 500, type: "Contribution", date: "2023-10-15" },
-      { id: 2, member: "John Doe", amount: 200, type: "Fine", date: "2023-10-14" },
-      { id: 3, member: "Sarah Johnson", amount: 1000, type: "Loan Repayment", date: "2023-10-12" },
-      { id: 4, member: "Group", amount: 1200, type: "Expense", date: "2023-10-10" },
-    ],
-    members: [
-      { id: 1, name: "John Doe", role: "Chairperson", joined: "2021-03-15", contributions: 4500 },
-      { id: 2, name: "Jane Smith", role: "Treasurer", joined: "2021-04-22", contributions: 3800 },
-      { id: 3, name: "Robert Johnson", role: "Secretary", joined: "2021-05-10", contributions: 3200 },
-      { id: 4, name: "Sarah Williams", role: "Member", joined: "2021-06-05", contributions: 2800 },
-      { id: 5, name: "Michael Brown", role: "Member", joined: "2021-07-18", contributions: 2500 },
-    ],
-    upcomingEvents: [
-      { id: 1, title: "Monthly Meeting", date: "2023-11-05", location: "Community Hall" },
-      { id: 2, title: "Contribution Deadline", date: "2023-11-15", location: "Online" },
-      { id: 3, title: "Loan Committee Meeting", date: "2023-11-20", location: "Zoom" },
-    ],
-    financialData: [
-      { month: "Jan", contributions: 12000, expenses: 4000 },
-      { month: "Feb", contributions: 14000, expenses: 4500 },
-      { month: "Mar", contributions: 15000, expenses: 5000 },
-      { month: "Apr", contributions: 13000, expenses: 4200 },
-      { month: "May", contributions: 16000, expenses: 4800 },
-      { month: "Jun", contributions: 17000, expenses: 5200 },
-      { month: "Jul", contributions: 18000, expenses: 5500 },
-    ],
-     recentIncome: [
-      { id: 1, source: "Monthly Contributions", amount: 15000, date: "2023-10-01" },
-      { id: 2, source: "Loan Repayment - S. Williams", amount: 1050, date: "2023-10-05" },
-      { id: 3, source: "Late Payment Fines", amount: 300, date: "2023-10-07" },
-      { id: 4, source: "Investment Dividends", amount: 1200, date: "2023-10-10" },
-    ],
-    loansData: [
-      { id: 1, member: "Michael Brown", amount: 5000, interestRate: 5, status: "Active", dueDate: "2024-03-18", disbursedDate: "2023-09-18" },
-      { id: 2, member: "Sarah Williams", amount: 3000, interestRate: 5, status: "Paid", dueDate: "2023-10-05", disbursedDate: "2023-07-05" },
-      { id: 3, member: "John Doe", amount: 7000, interestRate: 4.5, status: "Active", dueDate: "2024-05-20", disbursedDate: "2023-11-20" },
-      { id: 4, member: "Robert Johnson", amount: 2500, interestRate: 5, status: "Overdue", dueDate: "2023-09-30", disbursedDate: "2023-06-30" },
-    ],
-    expensesData: [
-      { id: 1, item: "Office Supplies", category: "Admin", amount: 350, date: "2023-10-02" },
-      { id: 2, item: "Community Hall Rental", category: "Meeting", amount: 1500, date: "2023-10-05" },
-      { id: 3, item: "Bank Transaction Fees", category: "Finance", amount: 120, date: "2023-10-15" },
-      { id: 4, item: "Refreshments for Meeting", category: "Meeting", amount: 250, date: "2023-10-05" },
-    ],
-    finesData: [
-      { id: 1, member: "Michael Brown", reason: "Late Contribution", amount: 100, date: "2023-10-06", status: "Paid" },
-      { id: 2, member: "Robert Johnson", reason: "Missed Meeting", amount: 50, date: "2023-10-05", status: "Unpaid" },
-      { id: 3, member: "Jane Smith", reason: "Late Contribution", amount: 100, date: "2023-09-06", status: "Paid" },
-    ]
-  };
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // state for real data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isUploadDocumentModalOpen, setIsUploadDocumentModalOpen] =
+    useState(false);
+  const [isCreatePolicyModalOpen, setIsCreatePolicyModalOpen] = useState(false);
+  const [isGroupClosureModalOpen, setIsGroupClosureModalOpen] = useState(false);
+  const [chamaData, setChamaData] = useState<any>({
+    id,
+    name: "",
+    status: "",
+    totalValue: 0,
+    membersCount: 0,
+    contributions: 0,
+    expenses: 0,
+    loans: 0,
+    fines: 0,
+    goals: [],
+    recentTransactions: [],
+    members: [],
+    upcomingEvents: [],
+    financialData: [],
+    recentIncome: [],
+    loansData: [],
+    expensesData: [],
+    finesData: [],
+  });
+
+  const groupHook = useGroup();
+  const reports = useReports();
+  // Overview-specific state (from old OverviewTab)
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [summary, setSummary] = useState<any>(null);
+  const [monthlyData, setMonthlyData] = useState<any>(null);
+  const [balanceSheet, setBalanceSheet] = useState<any>(null);
+  const [finesReport, setFinesReport] = useState<any>(null);
+  const [loanReport, setLoanReport] = useState<any>(null);
+  const transactionHook = useTransaction();
+  const goalsHook = useGoals();
+  const commsHook = useCommunication();
+  const fineRuleHook = useFineRule();
+
+  useEffect(() => {
+    if (!id) return;
+    let mounted = true;
+    setLoading(true);
+    (async () => {
+      try {
+        // Group details
+        const g = await groupHook.getById(id as string);
+        const group = g?.data ?? g ?? null;
+        if (!mounted) return;
+        if (group) {
+          setChamaData((prev: any) => ({ ...prev, ...group }));
+        }
+
+        // Recent transactions: contributions
+        try {
+          const contribs = await transactionHook.getAll(
+            id as string,
+            0,
+            50,
+            TransactionType.CONTRIBUTION
+          );
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              recentTransactions: Array.isArray(contribs)
+                ? contribs
+                : contribs?.data || [],
+            }));
+        } catch (e) {
+          // ignore
+        }
+
+        // Income records
+        try {
+          const incomes = await transactionHook.getAll(
+            id as string,
+            0,
+            50,
+            TransactionType.INCOME
+          );
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              recentIncome: Array.isArray(incomes)
+                ? incomes
+                : incomes?.data || [],
+            }));
+        } catch (e) {}
+
+        // Monthly financials for charts
+        try {
+          const year = new Date().getFullYear();
+          const monthly = await reports.getMonthlyTransactions({
+            groupId: id as string,
+            year,
+          });
+          // monthly expected shape: [{ month: number, total, expenses }]
+          const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const mapped = (monthly || []).map((m: any) => ({
+            month: months[(Number(m.month) || 1) - 1] || `M${m.month}`,
+            contributions: m.total || 0,
+            expenses: m.expenses || 0,
+          }));
+          if (mounted) {
+            setChamaData((prev: any) => ({ ...prev, financialData: mapped }));
+            setMonthlyData(mapped);
+          }
+        } catch (e) {}
+
+        // Expense report
+        try {
+          const exp = await reports.getExpenseReport({ groupId: id as string });
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              expensesData: exp?.recentExpenses || [],
+            }));
+        } catch (e) {}
+
+        // Fines
+        try {
+          const fines = await reports.getFinesReport({ groupId: id as string });
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              finesData: fines?.memberFines || [],
+            }));
+        } catch (e) {}
+
+        // Loans
+        try {
+          const loanAnalysis = await reports.getLoanAnalysisReport({
+            groupId: id as string,
+          });
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              loansData: loanAnalysis?.loanDetails || [],
+            }));
+        } catch (e) {}
+
+        // Documents & Policies (basic fetch via useGroup)
+        try {
+          const policiesRes = await (groupHook as any).getPolicies(
+            id as string
+          );
+          // useGroup.getPolicies sets internal state; also capture for local UI
+          if (mounted && policiesRes && policiesRes.data) {
+            setChamaData((prev: any) => ({
+              ...prev,
+              policies: policiesRes.data,
+            }));
+          }
+        } catch (e) {}
+        // Overview summary, balance sheet, fines and loan report
+        try {
+          const [summaryData, monthlyRaw, balanceData, finesData, loanData] =
+            await Promise.all([
+              reports.getTransactionSummary({
+                groupId: id as string,
+                year: new Date().getFullYear(),
+              }),
+              // also call monthly here if not already
+              reports.getMonthlyTransactions({
+                groupId: id as string,
+                year: new Date().getFullYear(),
+              }),
+              reports.getBalanceSheet({ groupId: id as string }),
+              reports.getFinesReport({
+                groupId: id as string,
+                year: new Date().getFullYear(),
+              }),
+              reports.getLoanAnalysisReport({
+                groupId: id as string,
+                year: new Date().getFullYear(),
+              }),
+            ]);
+          if (mounted) {
+            setSummary(summaryData);
+            const mappedMonthly = (monthlyRaw || []).map((m: any) => ({
+              month: Number(m.month)
+                ? [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ][Number(m.month) - 1]
+                : `M${m.month}`,
+              contributions: m.total || 0,
+              expenses: m.expenses || 0,
+            }));
+            setMonthlyData(mappedMonthly || monthlyData);
+            setBalanceSheet(balanceData);
+            setFinesReport(finesData);
+            setLoanReport(loanData);
+          }
+        } catch (e) {
+          // ignore overview subfetch failures
+        }
+        // Goals
+        try {
+          const gres = await goalsHook.getGroupGoals(id as string);
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              goals: gres || gres?.data || [],
+            }));
+        } catch (e) {}
+
+        // Communications (prefetch messages for the Communications tab)
+        try {
+          await commsHook.getMessages(id as string);
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              messages: commsHook.messages || [],
+            }));
+        } catch (e) {}
+
+        // Fine rules (for Settings / Fines)
+        try {
+          const fr = await fineRuleHook.getGroupFineRules(id as string);
+          if (mounted)
+            setChamaData((prev: any) => ({
+              ...prev,
+              fineRules: fineRuleHook.fineRules || fr || [],
+            }));
+        } catch (e) {}
+        try {
+          // There's no dedicated getDocuments in the hook; use the endpoint via fetch as a simple client-side call
+          const token = (await (groupHook as any).getById)
+            ? await await fetch("/api/auth/token")
+                .then((r) => r.text())
+                .catch(() => "")
+            : "";
+          try {
+            const tokenStored =
+              typeof window !== "undefined"
+                ? localStorage.getItem("token")
+                : null;
+            const docsResp = await fetch(
+              `${
+                process.env.NEXT_PUBLIC_API_URL || "http://localhost:3080"
+              }/api/v1/groups/${id}/documents`,
+              {
+                headers: tokenStored
+                  ? { Authorization: `Bearer ${tokenStored}` }
+                  : undefined,
+              }
+            );
+            if (docsResp.ok) {
+              const docsJson = await docsResp.json();
+              if (mounted)
+                setChamaData((prev: any) => ({
+                  ...prev,
+                  documents: docsJson.data || [],
+                }));
+            }
+          } catch (e) {
+            // ignore
+          }
+        } catch (e) {}
+      } catch (err: any) {
+        if (mounted) setError(err?.message || "Failed to load chama data");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: <LayoutDashboard className="h-4 w-4" /> },
-    { id: 'members', label: 'Members', icon: <Users className="h-4 w-4" /> },
-    { id: 'contributions', label: 'Contributions', icon: <Landmark className="h-4 w-4" /> },
-    { id: 'income', label: 'Income', icon: <ArrowUp className="h-4 w-4" /> },
-    { id: 'loans', label: 'Loans', icon: <HandCoins className="h-4 w-4" /> },
-    { id: 'expenses', label: 'Expenses', icon: <ArrowDown className="h-4 w-4" /> },
-    { id: 'fines', label: 'Fines', icon: <CircleDollarSign className="h-4 w-4" /> },
-    { id: 'goals', label: 'Goals', icon: <Target className="h-4 w-4" /> },
-    { id: 'settings', label: 'Settings', icon: <Settings className="h-4 w-4" /> },
+    {
+      id: "overview",
+      label: "Overview",
+      icon: <LayoutDashboard className="h-4 w-4" />,
+    },
+    { id: "members", label: "Members", icon: <Users className="h-4 w-4" /> },
+    {
+      id: "contributions",
+      label: "Contributions",
+      icon: <Landmark className="h-4 w-4" />,
+    },
+    { id: "income", label: "Income", icon: <ArrowUp className="h-4 w-4" /> },
+    { id: "loans", label: "Loans", icon: <HandCoins className="h-4 w-4" /> },
+    {
+      id: "expenses",
+      label: "Expenses",
+      icon: <ArrowDown className="h-4 w-4" />,
+    },
+    {
+      id: "fines",
+      label: "Fines",
+      icon: <CircleDollarSign className="h-4 w-4" />,
+    },
+    { id: "goals", label: "Goals", icon: <Target className="h-4 w-4" /> },
+    {
+      id: "settings",
+      label: "Settings",
+      icon: <Settings className="h-4 w-4" />,
+    },
   ];
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(amount);
+  // Safely render member-like values which may be strings or objects
+  const displayName = (val: any) => {
+    if (val == null) return "Unknown";
+    if (typeof val === "string") return val;
+    if (typeof val === "number") return String(val);
+    if (typeof val === "object") {
+      // common shapes: { name, fullName, firstName }
+      return val.name ?? val.fullName ?? val.firstName ?? JSON.stringify(val);
+    }
+    return String(val);
+  };
+
+  const handleUploadDocument = async (data: {
+    title: string;
+    content: string;
+    type?: string;
+  }) => {
+    try {
+      await (groupHook as any).uploadDocument(id as string, data as any);
+      // refresh documents
+      const tokenStored =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      const docsResp = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3080"
+        }/api/v1/groups/${id}/documents`,
+        {
+          headers: tokenStored
+            ? { Authorization: `Bearer ${tokenStored}` }
+            : undefined,
+        }
+      );
+      if (docsResp.ok) {
+        const docsJson = await docsResp.json();
+        setChamaData((prev: any) => ({
+          ...prev,
+          documents: docsJson.data || [],
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const handleCreatePolicy = async (data: {
+    name: string;
+    type: string;
+    content: any;
+  }) => {
+    try {
+      await (groupHook as any).createPolicy(id as string, {
+        name: data.name,
+        type: data.type as any,
+        content: data.content,
+      });
+      // refresh policies via hook
+      await (groupHook as any).getPolicies(id as string);
+      setChamaData((prev: any) => ({
+        ...prev,
+        policies: (groupHook as any).policies || [],
+      }));
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const handleInitiateClosure = async (data: {
+    closureDate: string;
+    reason: string;
+  }) => {
+    try {
+      await (groupHook as any).initiateGroupClosure(id as string, data as any);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   };
 
   return (
-    <>
-      <main className="flex-grow w-full relative z-10">
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6 lg:-mt-28">
+    <div className="flex flex-col min-h-screen w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
+      <div className="w-full bg-[#1C2634] dark:bg-[#2C3542] pb-32 -mt-16 relative overflow-hidden">
+        {/* Subtle grid pattern background */}
+        <div className="absolute inset-0 grid-pattern pointer-events-none z-0"></div>
 
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--secondary)]/5 pointer-events-none z-0"></div>
+
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-24 lg:px-10 xl:px-20 relative z-10">
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
             <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 gap-2 overflow-x-auto overflow-y-hidden">
               {tabs.map((tab) => (
-                <TabsTrigger 
-                  key={tab.id} 
-                  value={tab.id} 
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
                   className="flex items-center gap-2 py-2 text-xs sm:text-sm"
                 >
                   {tab.icon}
@@ -137,11 +530,25 @@ export default function IndividualChamaPage() {
               ))}
             </TabsList>
           </Tabs>
+        </div>
+      </div>
+      <main className="flex-grow w-full relative z-10">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 pt-6 lg:-mt-28">
+          {loading && (
+            <div className="p-6 text-center text-sm text-muted-foreground">
+              Loading group data...
+            </div>
+          )}
+          {error && (
+            <div className="p-6 text-center text-sm text-destructive">
+              Error loading group: {error}
+            </div>
+          )}
 
           {/* Tab Content */}
           <>
             {/* Overview Tab */}
-            {activeTab === 'overview' && (
+            {activeTab === "overview" && (
               <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
                 {/* Left Column */}
                 <div className="flex flex-col gap-6">
@@ -156,46 +563,98 @@ export default function IndividualChamaPage() {
                     <CardContent>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="bg-[#F0F9FF] dark:bg-[#1E293B] p-4 rounded-lg">
-                          <div className="text-muted-foreground text-sm">Total Value</div>
-                          <div className="text-xl font-bold">{formatCurrency(chamaData.totalValue)}</div>
+                          <div className="text-muted-foreground text-sm">
+                            Total Amount
+                          </div>
+                          <div className="text-xl font-bold">
+                            {formatCurrency(
+                              summary?.totalAmount ?? chamaData.totalValue ?? 0
+                            )}
+                          </div>
                         </div>
                         <div className="bg-[#F0FDF4] dark:bg-[#1F2E1D] p-4 rounded-lg">
-                          <div className="text-muted-foreground text-sm">Contributions</div>
-                          <div className="text-xl font-bold">{formatCurrency(chamaData.contributions)}</div>
+                          <div className="text-muted-foreground text-sm">
+                            Contributions
+                          </div>
+                          <div className="text-xl font-bold">
+                            {formatCurrency(
+                              summary?.contributionAmount ??
+                                chamaData.contributions ??
+                                0
+                            )}
+                          </div>
                         </div>
                         <div className="bg-[#FEF2F2] dark:bg-[#2D1A1A] p-4 rounded-lg">
-                          <div className="text-muted-foreground text-sm">Expenses</div>
-                          <div className="text-xl font-bold">{formatCurrency(chamaData.expenses)}</div>
+                          <div className="text-muted-foreground text-sm">
+                            Expenses
+                          </div>
+                          <div className="text-xl font-bold">
+                            {formatCurrency(
+                              summary?.expenseAmount ?? chamaData.expenses ?? 0
+                            )}
+                          </div>
                         </div>
                         <div className="bg-[#FFFBEB] dark:bg-[#2E240D] p-4 rounded-lg">
-                          <div className="text-muted-foreground text-sm">Active Loans</div>
-                          <div className="text-xl font-bold">{formatCurrency(chamaData.loans)}</div>
+                          <div className="text-muted-foreground text-sm">
+                            Loans
+                          </div>
+                          <div className="text-xl font-bold">
+                            {formatCurrency(
+                              summary?.loanAmount ?? chamaData.loans ?? 0
+                            )}
+                          </div>
                         </div>
                       </div>
-                      
+
                       {/* Contribution vs Expenses Chart */}
                       <div className="mt-6">
-                        <h3 className="font-semibold mb-4">Contributions vs Expenses</h3>
+                        <h3 className="font-semibold mb-4">
+                          Contributions vs Expenses
+                        </h3>
                         <div className="h-64">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart
-                              data={chamaData.financialData}
-                              margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
-                            >
-                              <CartesianGrid strokeDasharray="3 3" />
-                              <XAxis dataKey="month" />
-                              <YAxis />
-                              <Tooltip
-                                contentStyle={{
-                                  backgroundColor: 'hsl(var(--background))',
-                                  border: '1px solid hsl(var(--border))',
+                          {Array.isArray(monthlyData) &&
+                          monthlyData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                              <LineChart
+                                data={monthlyData}
+                                margin={{
+                                  top: 5,
+                                  right: 20,
+                                  left: -10,
+                                  bottom: 5,
                                 }}
-                              />
-                              <Legend />
-                              <Line type="monotone" dataKey="contributions" stroke="#3B82F6" strokeWidth={2} name="Contributions" />
-                              <Line type="monotone" dataKey="expenses" stroke="#EF4444" strokeWidth={2} name="Expenses" />
-                            </LineChart>
-                          </ResponsiveContainer>
+                              >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="month" />
+                                <YAxis />
+                                <Tooltip
+                                  contentStyle={{
+                                    backgroundColor: "hsl(var(--background))",
+                                    border: "1px solid hsl(var(--border))",
+                                  }}
+                                />
+                                <Legend />
+                                <Line
+                                  type="monotone"
+                                  dataKey="contributions"
+                                  stroke="#3B82F6"
+                                  strokeWidth={2}
+                                  name="Contributions"
+                                />
+                                <Line
+                                  type="monotone"
+                                  dataKey="expenses"
+                                  stroke="#EF4444"
+                                  strokeWidth={2}
+                                  name="Expenses"
+                                />
+                              </LineChart>
+                            </ResponsiveContainer>
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                              No financial data available
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -220,16 +679,43 @@ export default function IndividualChamaPage() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {chamaData.recentTransactions.map((tx) => (
-                            <TableRow key={tx.id}>
-                              <TableCell className="font-medium">{tx.member}</TableCell>
-                              <TableCell>{tx.type}</TableCell>
-                              <TableCell className={tx.type === 'Contribution' || tx.type === 'Loan Repayment' ? 'text-green-500' : 'text-red-500'}>
-                                {formatCurrency(tx.amount)}
-                              </TableCell>
-                              <TableCell className="text-right">{tx.date}</TableCell>
-                            </TableRow>
-                          ))}
+                              {Array.isArray(chamaData.recentTransactions) &&
+                            chamaData.recentTransactions.map((tx: any) => (
+                              <TableRow key={tx.id}>
+                                <TableCell className="font-medium" dataLabel="Member">
+                                  {getMemberDisplay(tx, chamaData)}
+                                </TableCell>
+                                <TableCell dataLabel="Type">
+                                  {displayName(
+                                    tx.transactionType ??
+                                      tx.type ??
+                                      tx.transaction
+                                  )}
+                                </TableCell>
+                                <TableCell
+                                  dataLabel="Amount"
+                                  className={
+                                    tx.transactionType ===
+                                      TransactionType.CONTRIBUTION ||
+                                    tx.transactionType ===
+                                      TransactionType.REPAYMENT ||
+                                    tx.transactionType ===
+                                      TransactionType.INCOME
+                                      ? "text-green-500"
+                                      : "text-red-500"
+                                  }
+                                >
+                                  {formatCurrency(
+                                    Number(tx.amount ?? tx.value ?? 0)
+                                  )}
+                                </TableCell>
+                                <TableCell className="text-right" dataLabel="Date">
+                                  {formatDateWithTime(
+                                    tx.date || tx.createdAt || tx.timestamp
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            ))}
                         </TableBody>
                       </Table>
                     </CardContent>
@@ -250,16 +736,30 @@ export default function IndividualChamaPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {chamaData.goals.map((goal) => (
+                      {chamaData.goals.map((goal: any) => (
                         <div key={goal.id}>
                           <div className="flex justify-between mb-1">
-                            <span className="font-medium">{goal.name}</span>
-                            <span className="text-muted-foreground">{formatCurrency(goal.current)}/{formatCurrency(goal.target)}</span>
+                            <span className="font-medium">{goal.title}</span>
+                            <span className="text-muted-foreground">
+                              {formatCurrency(goal.currentAmount || 0)}/
+                              {formatCurrency(goal.targetAmount || 0)}
+                            </span>
                           </div>
-                          <Progress value={(goal.current / goal.target) * 100} className="h-2" />
+                          <Progress
+                            value={
+                              (goal.currentAmount / goal.targetAmount) * 100
+                            }
+                            className="h-2"
+                          />
                           <div className="flex justify-between mt-1 text-sm text-muted-foreground">
-                            <span>Target: {goal.deadline}</span>
-                            <span>{Math.round((goal.current / goal.target) * 100)}%</span>
+                            <span>
+                              Target: {formatDateWithTime(goal.deadline)}
+                            </span>
+                            <span>
+                              {Math.round((goal.current / goal.target) * 100) ||
+                                0}
+                              %
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -279,11 +779,13 @@ export default function IndividualChamaPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {chamaData.upcomingEvents.map((event) => (
+                      {chamaData.upcomingEvents.map((event: any) => (
                         <div key={event.id} className="flex items-start gap-4">
                           <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
                             <div className="text-center text-sm font-bold">
-                              {new Date(event.date).toLocaleString('default', { month: 'short' })}
+                              {new Date(event.date).toLocaleString("default", {
+                                month: "short",
+                              })}
                             </div>
                             <div className="text-center text-xl font-bold">
                               {new Date(event.date).getDate()}
@@ -291,7 +793,9 @@ export default function IndividualChamaPage() {
                           </div>
                           <div>
                             <div className="font-medium">{event.title}</div>
-                            <div className="text-sm text-muted-foreground">{event.location}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {event.location}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -304,7 +808,7 @@ export default function IndividualChamaPage() {
                   </Card>
 
                   {/* Top Contributors */}
-                  <Card>
+                  {/* <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Users className="h-5 w-5" />
@@ -313,17 +817,17 @@ export default function IndividualChamaPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {chamaData.members.slice(0, 3).map((member, index) => (
-                        <div key={member.id} className="flex items-center justify-between">
+                        <div key={member?.id ?? index} className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <Avatar>
-                              <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>{(member && member.name) ? String(member.name).charAt(0) : "?"}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <div className="font-medium">{member.name}</div>
-                              <div className="text-sm text-muted-foreground">{member.role}</div>
+                              <div className="font-medium">{member?.name ?? 'Unknown'}</div>
+                              <div className="text-sm text-muted-foreground">{member?.role ?? 'Member'}</div>
                             </div>
                           </div>
-                          <div className="font-bold">{formatCurrency(member.contributions)}</div>
+                          <div className="font-bold">{formatCurrency(Number(member?.contributions ?? 0))}</div>
                         </div>
                       ))}
                     </CardContent>
@@ -332,378 +836,95 @@ export default function IndividualChamaPage() {
                         View All Members
                       </Button>
                     </CardFooter>
-                  </Card>
+                  </Card> */}
                 </div>
               </div>
             )}
 
-            {/* Members Tab */}
-            {activeTab === 'members' && (
+            {/* Members Tab (moved to component) */}
+            {activeTab === "members" && (
               <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Group Members</h2>
-                  <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Member
-                  </Button>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {chamaData.members.map(member => (
-                    <Card key={member.id} className="flex flex-col">
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Avatar>
-                            <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <CardTitle className="text-base">{member.name}</CardTitle>
-                            <div className="text-sm text-muted-foreground">{member.role}</div>
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <div className="text-muted-foreground text-sm">Joined</div>
-                            <div>{member.joined}</div>
-                          </div>
-                          <div>
-                            <div className="text-muted-foreground text-sm">Contributions</div>
-                            <div className="font-bold">{formatCurrency(member.contributions)}</div>
-                          </div>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="outline" className="w-full">
-                          View Profile
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
+                <MembersTab group={chamaData} />
               </div>
             )}
 
             {/* Contributions Tab */}
-            {activeTab === 'contributions' && (
+            {activeTab === "contributions" && (
               <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Contributions</h2>
-                  <div className="flex gap-2">
-                    <Input placeholder="Search contributions..." className="max-w-xs" />
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Record Contribution
-                    </Button>
-                  </div>
-                </div>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Contribution History</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Member</TableHead>
-                            <TableHead>Amount</TableHead>
-                            <TableHead>Payment Method</TableHead>
-                            <TableHead className="text-right">Status</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {chamaData.recentTransactions.map((tx) => (
-                            <TableRow key={tx.id}>
-                              <TableCell>{tx.date}</TableCell>
-                              <TableCell>{tx.member}</TableCell>
-                              <TableCell className="text-green-500">{formatCurrency(tx.amount)}</TableCell>
-                              <TableCell>M-Pesa</TableCell>
-                              <TableCell className="text-right">
-                                <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">
-                                  Completed
-                                </span>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="justify-center">
-                    <Button variant="ghost">Load More</Button>
-                  </CardFooter>
-                </Card>
+                <ContributionsTab group={chamaData} />
               </div>
             )}
 
-            {/* Income Tab */}
-            {activeTab === 'income' && (
-               <div>
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                  <h2 className="text-xl font-bold">Income Records</h2>
-                  <div className="flex gap-2 w-full sm:w-auto">
-                    <div className="relative w-full sm:w-auto">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search income..." className="pl-10 max-w-xs" />
-                    </div>
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Income
-                    </Button>
-                  </div>
-                </div>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Income History</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Source</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {chamaData.recentIncome.map((income) => (
-                            <TableRow key={income.id}>
-                              <TableCell>{income.date}</TableCell>
-                              <TableCell className="font-medium">{income.source}</TableCell>
-                              <TableCell className="text-right text-green-500">{formatCurrency(income.amount)}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                   <CardFooter className="justify-center">
-                    <Button variant="ghost">Load More</Button>
-                  </CardFooter>
-                </Card>
-              </div>
-            )}
-
-            {/* Loans Tab */}
-            {activeTab === 'loans' && (
+            {/* Income Tab (moved to component) */}
+            {activeTab === "income" && (
               <div>
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                  <h2 className="text-xl font-bold">Loan Management</h2>
-                  <div className="flex gap-2 w-full sm:w-auto">
-                    <div className="relative w-full sm:w-auto">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search loans..." className="pl-10 max-w-xs" />
-                    </div>
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      New Loan
-                    </Button>
-                  </div>
-                </div>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Loan Portfolio</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Member</TableHead>
-                            <TableHead>Amount</TableHead>
-                            <TableHead>Interest</TableHead>
-                            <TableHead>Disbursed</TableHead>
-                            <TableHead>Due Date</TableHead>
-                            <TableHead className="text-center">Status</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {chamaData.loansData.map((loan) => (
-                            <TableRow key={loan.id}>
-                              <TableCell className="font-medium">{loan.member}</TableCell>
-                              <TableCell>{formatCurrency(loan.amount)}</TableCell>
-                              <TableCell>{loan.interestRate}%</TableCell>
-                              <TableCell>{loan.disbursedDate}</TableCell>
-                              <TableCell>{loan.dueDate}</TableCell>
-                              <TableCell className="text-center">
-                                <Badge variant={loan.status === 'Active' ? 'default' : loan.status === 'Paid' ? 'secondary' : 'destructive'} 
-                                className={
-                                  loan.status === 'Active' ? 'bg-blue-500' : 
-                                  loan.status === 'Paid' ? 'bg-green-500' : 'bg-red-500'
-                                }
-                                >
-                                  {loan.status}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                <Button variant="ghost" size="icon">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                   <CardFooter className="justify-center">
-                    <Button variant="ghost">Load More</Button>
-                  </CardFooter>
-                </Card>
+                <IncomeTab group={chamaData} />
               </div>
             )}
 
-            {/* Expenses Tab */}
-            {activeTab === 'expenses' && (
+            {/* Loans Tab (moved to component) */}
+            {activeTab === "loans" && (
               <div>
-                 <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                  <h2 className="text-xl font-bold">Expense Tracking</h2>
-                   <div className="flex gap-2 w-full sm:w-auto">
-                     <div className="relative w-full sm:w-auto">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search expenses..." className="pl-10 max-w-xs" />
-                    </div>
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Expense
-                    </Button>
-                  </div>
-                </div>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Expense History</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                     <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Item</TableHead>
-                            <TableHead>Category</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {chamaData.expensesData.map((expense) => (
-                            <TableRow key={expense.id}>
-                              <TableCell>{expense.date}</TableCell>
-                              <TableCell className="font-medium">{expense.item}</TableCell>
-                              <TableCell>{expense.category}</TableCell>
-                              <TableCell className="text-right text-red-500">{formatCurrency(expense.amount)}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                   <CardFooter className="justify-center">
-                    <Button variant="ghost">Load More</Button>
-                  </CardFooter>
-                </Card>
+                <LoansTab group={chamaData} />
               </div>
             )}
 
-            {/* Fines Tab */}
-            {activeTab === 'fines' && (
-               <div>
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                  <h2 className="text-xl font-bold">Fines Management</h2>
-                  <div className="flex gap-2 w-full sm:w-auto">
-                    <div className="relative w-full sm:w-auto">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search fines..." className="pl-10 max-w-xs" />
-                    </div>
-                    <Button>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Record Fine
-                    </Button>
-                  </div>
-                </div>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Fines History</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Member</TableHead>
-                            <TableHead>Reason</TableHead>
-                            <TableHead>Amount</TableHead>
-                            <TableHead className="text-center">Status</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {chamaData.finesData.map((fine) => (
-                            <TableRow key={fine.id}>
-                              <TableCell>{fine.date}</TableCell>
-                              <TableCell className="font-medium">{fine.member}</TableCell>
-                              <TableCell>{fine.reason}</TableCell>
-                              <TableCell>{formatCurrency(fine.amount)}</TableCell>
-                              <TableCell className="text-center">
-                                <Badge variant={fine.status === 'Paid' ? 'secondary' : 'destructive'}
-                                  className={fine.status === 'Paid' ? 'bg-green-500' : 'bg-yellow-500'}
-                                >
-                                  {fine.status}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                <Button variant="ghost" size="icon">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </CardContent>
-                   <CardFooter className="justify-center">
-                    <Button variant="ghost">Load More</Button>
-                  </CardFooter>
-                </Card>
+            {/* Expenses Tab (moved to component) */}
+            {activeTab === "expenses" && (
+              <div>
+                <ExpensesTab group={chamaData} />
+              </div>
+            )}
+
+            {/* Fines Tab (moved to component) */}
+            {activeTab === "fines" && (
+              <div>
+                <FinesTab group={chamaData} />
+              </div>
+            )}
+
+            {activeTab === "goals" && (
+              <div>
+                <GoalsTab group={chamaData} />
               </div>
             )}
 
             {/* Placeholder for other tabs */}
-            {activeTab !== 'overview' && activeTab !== 'members' && activeTab !== 'contributions' && activeTab !== 'income' && activeTab !== 'loans' && activeTab !== 'expenses' && activeTab !== 'fines' && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
-                  {tabs.find(t => t.id === activeTab)?.icon}
+            {activeTab !== "overview" &&
+              activeTab !== "members" &&
+              activeTab !== "contributions" &&
+              activeTab !== "income" &&
+              activeTab !== "loans" &&
+              activeTab !== "expenses" &&
+              activeTab !== "goals" &&
+              activeTab !== "fines" && (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-full mb-4">
+                    {tabs.find((t) => t.id === activeTab)?.icon}
+                  </div>
+                  <h2 className="text-xl font-bold mb-2">
+                    {tabs.find((t) => t.id === activeTab)?.label} Dashboard
+                  </h2>
+                  <p className="text-muted-foreground mb-6 text-center">
+                    This section is under development. You'll be able to manage
+                    all{" "}
+                    {typeof activeTab === "string"
+                      ? activeTab.toLowerCase()
+                      : String(activeTab)}{" "}
+                    here.
+                  </p>
+                  <Button>
+                    Explore Features
+                    <ChevronRight className="h-4 w-4 ml-2" />
+                  </Button>
                 </div>
-                <h2 className="text-xl font-bold mb-2">{tabs.find(t => t.id === activeTab)?.label} Dashboard</h2>
-                <p className="text-muted-foreground mb-6 text-center">
-                  This section is under development. You'll be able to manage all {activeTab.toLowerCase()} here.
-                </p>
-                <Button>
-                  Explore Features
-                  <ChevronRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            )}
+              )}
           </>
         </div>
       </main>
       <footer className="w-full p-4 text-center text-xs text-muted-foreground">
         © 2025 Chama Connect. All rights reserved.
       </footer>
-    </>
+    </div>
   );
 }

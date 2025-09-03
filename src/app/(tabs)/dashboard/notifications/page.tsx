@@ -1,70 +1,27 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Settings2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNotification } from '@/hooks/use-notification';
 
-const notificationsData = [
-  {
-    type: "Transfer Success",
-    message: "You have successfully sent Johnathan $10.00",
-    time: "2m",
-    read: false,
-    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
-  },
-  {
-    type: "Transfer Success",
-    message: "You have successfully sent Starbucks $10.00",
-    time: "30m",
-    read: false,
-    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
-  },
-  {
-    type: "Receive $100.00",
-    message: "You received a payment from Fiver Inter of $100.00",
-    time: "3h",
-    read: true,
-    icon: <ArrowDownCircle className="h-6 w-6 text-green-500" />
-  },
-  {
-    type: "Receive $200.00",
-    message: "You received a payment from Upwork of $200.00",
-    time: "4h",
-    read: true,
-    icon: <ArrowDownCircle className="h-6 w-6 text-green-500" />
-  },
-   {
-    type: "Transfer Success",
-    message: "You have successfully sent johnatan $10.00",
-    time: "2m",
-    read: false,
-    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
-  },
-  {
-    type: "Transfer Success",
-    message: "You have successfully sent Startbucks $10.00",
-    time: "30m",
-    read: false,
-    icon: <ArrowUpCircle className="h-6 w-6 text-blue-500" />
-  },
-  {
-    type: "Receive $100.00",
-    message: "You received a payment from Fiver Inter of $100.00",
-    time: "3h",
-    read: true,
-    icon: <ArrowDownCircle className="h-6 w-6 text-green-500" />
-  },
-];
+// We'll fetch real notifications from the backend via the hook
 
 export default function NotificationsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { getUserNotifications, pagination, loading, markAsRead } = useNotification();
 
-  const filteredNotifications = notificationsData.filter(notification =>
-    notification.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    notification.message.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    // load first page of notifications (sorted by hook)
+    getUserNotifications({ limit: 100, offset: 0 });
+  }, [getUserNotifications]);
+
+  const filteredNotifications = (pagination.data || []).filter((notification: any) =>
+    (notification.type || '').toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (notification.message || '').toString().toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -90,20 +47,34 @@ export default function NotificationsPage() {
               </div>
 
               <div className="flex flex-col gap-6">
-                {filteredNotifications.map((item, index) => (
-                  <div key={index} className="flex items-start gap-4 w-full p-4 border-b border-border last:border-b-0">
+                {loading && <div className="text-sm text-muted-foreground">Loading...</div>}
+                {!loading && filteredNotifications.length === 0 && (
+                  <div className="text-sm text-muted-foreground">No notifications</div>
+                )}
+                {filteredNotifications.map((item: any, index: number) => (
+                  <div key={item.id || index} className="flex items-start gap-4 w-full p-4 border-b border-border last:border-b-0">
                     <div className="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                      {item.icon}
+                      {item.type && item.type.toLowerCase().includes('receive') ? <ArrowDownCircle className="h-6 w-6 text-green-500" /> : <ArrowUpCircle className="h-6 w-6 text-blue-500" />}
                     </div>
                     <div className="flex-grow">
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                         <p className="font-semibold text-foreground text-base">{item.type}</p>
                         <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1 sm:mt-0">
-                          <span>{item.time}</span>
-                          {!item.read && <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>}
+                          <span>{item.createdAt ? new Date(item.createdAt).toLocaleString() : item.time}</span>
+                          {item.status === 'UNREAD' && <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>}
                         </div>
                       </div>
                       <p className="text-sm text-muted-foreground mt-1 pr-4">{item.message}</p>
+                      <div className="mt-2 flex items-center gap-2">
+                        {item.status === 'UNREAD' && (
+                          <button
+                            onClick={() => markAsRead(item.id)}
+                            className="text-sm text-muted-foreground underline"
+                          >
+                            Mark read
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}

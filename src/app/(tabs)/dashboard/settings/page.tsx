@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -41,6 +42,47 @@ const SettingsMenuItem = ({ icon, label, isActive, onClick }: { icon: React.Reac
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('personal');
+  const { user, meAuth, updateProfile, updateProfilePicture } = useAuth();
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    // load user from context or fetch
+    (async () => {
+      if (!user) {
+        await meAuth();
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || '');
+      setLastName(user.lastName || '');
+      setEmail(user.email || '');
+    }
+  }, [user]);
+
+  async function handleSave() {
+    try {
+      await updateProfile(email, firstName, lastName, user?.phone || '');
+      // you might want to show toast on success
+    } catch (err) {
+      // errors already handled in hook via toasts
+    }
+  }
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      await updateProfilePicture(file);
+    } catch (err) {
+      // handled in hook
+    }
+  }
 
   return (
     <div className="flex justify-center w-full bg-[#F4F4F7] dark:bg-[#1A1C1E]">
@@ -97,10 +139,11 @@ export default function SettingsPage() {
                           <Image src="https://api.dicebear.com/9.x/adventurer/svg?seed=Ryan" alt="User Profile" layout="fill" objectFit="cover" />
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
-                          <Button>
+                          <label className="inline-flex items-center">
                             <UploadCloud className="mr-2 h-4 w-4" />
-                            Upload Image
-                          </Button>
+                            <input type="file" accept="image/*" onChange={handleUpload} className="hidden" />
+                            <span className="underline cursor-pointer">Upload Image</span>
+                          </label>
                           <Button variant="outline">
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete
@@ -113,16 +156,16 @@ export default function SettingsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="firstName" className="text-xs font-medium text-muted-foreground">First Name</Label>
-                        <Input id="firstName" defaultValue="Osborne" className="h-14 rounded-xl"/>
+                        <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="h-14 rounded-xl"/>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName" className="text-xs font-medium text-muted-foreground">Last Name</Label>
-                        <Input id="lastName" defaultValue="Ozzy" className="h-14 rounded-xl"/>
+                        <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-14 rounded-xl"/>
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-xs font-medium text-muted-foreground">Email</Label>
-                      <Input id="email" type="email" defaultValue="osborn@example.com" className="h-14 rounded-xl"/>
+                      <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-14 rounded-xl"/>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="dob" className="text-xs font-medium text-muted-foreground">Date of Birth</Label>
@@ -169,7 +212,7 @@ export default function SettingsPage() {
 
                     <div className="flex flex-col sm:flex-row justify-end gap-4">
                       <Button variant="outline" className="w-full sm:w-auto h-12 rounded-xl">Cancel</Button>
-                      <Button className="w-full sm:w-auto h-12 rounded-xl bg-primary hover:bg-primary/90">Save</Button>
+                      <Button onClick={handleSave} className="w-full sm:w-auto h-12 rounded-xl bg-primary hover:bg-primary/90">Save</Button>
                     </div>
                   </div>
                 </CardContent>

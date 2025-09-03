@@ -2,10 +2,7 @@ import { InfoCard } from "@/components/dashboard/info-card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Eye, Info, Send, Share } from "lucide-react";
 
-export function BalanceCard() {
-  const totalBalance = "$12,456,315";
-  const cardNumber = "**** 7189";
-
+export function BalanceCard({ totalBalance, cardNumber }: { totalBalance?: string; cardNumber?: string }) {
   return (
     <InfoCard className="p-6 space-y-4 bg-white rounded-2xl dark:bg-[#2C3542] w-full shadow-md">
       <div className="flex items-center justify-between w-full">
@@ -36,16 +33,12 @@ export function BalanceCard() {
       <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-[15px]">
         <Button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary rounded-xl w-full sm:w-auto h-12 text-primary-foreground">
           <Send className="w-6 h-6" />
-          <span className="text-base font-semibold">
-            Send
-          </span>
+          <span className="text-base font-semibold">Apply for Loan</span>
         </Button>
-        <Button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary rounded-xl w-full sm:w-auto h-12 text-primary-foreground">
+        {/* <Button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary rounded-xl w-full sm:w-auto h-12 text-primary-foreground">
           <Share className="w-6 h-6" />
-          <span className="text-base font-semibold">
-            Receive
-          </span>
-        </Button>
+          <span className="text-base font-semibold">Receive</span>
+        </Button> */}
       </div>
     </InfoCard>
   );

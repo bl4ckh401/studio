@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { InfoIcon, ChevronRightIcon } from "lucide-react"; // Assuming you'll use these icons
+import { Info, ChevronRight } from "lucide-react";
 import Link from 'next/link';
 
 interface Chama {
@@ -35,7 +35,7 @@ function ChamaItem({ chama }: ChamaItemProps) {
         <div className="flex items-center gap-2">
           {/* Example: Display member count */}
           <span className="font-manrope text-sm font-medium text-gray-500 dark:text-gray-400">{`${chama.memberCount} members`}</span>
-          <ChevronRightIcon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </div>
       </div>
     </Link>
@@ -75,11 +75,11 @@ export default function ChamasListCard() {
       <CardHeader className="flex w-full flex-row items-center justify-between p-0">
         <CardTitle className="text-lg font-semibold leading-relaxed text-[#1A1C1E] dark:text-white flex items-center gap-1.5">
           My Chamas
-          <InfoIcon className="h-4.5 w-4.5 text-[#6C7278] dark:text-[#A2A6AA]" />
+          <Info className="h-4.5 w-4.5 text-[#6C7278] dark:text-[#A2A6AA]" />
         </CardTitle>
         <Link href="/dashboard/chamas" className="flex items-center gap-1.5 cursor-pointer text-sm font-medium leading-relaxed tracking-[-0.02em] text-secondary-300 dark:text-secondary-300">
           <span>See all</span>
-          <ChevronRightIcon className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3.5 w-3.5" />
         </Link>
       </CardHeader>
       <CardContent className="p-0 flex flex-col gap-0 w-full">

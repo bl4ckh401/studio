@@ -27,6 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BarChart } from "@/components/dashboard/bar-chart";
 import Link from 'next/link';
+import { formatCurrency } from '@/lib/utils';
 
 interface ChamaCardProps {
   group: {
@@ -41,9 +42,20 @@ interface ChamaCardProps {
 
 export function ChamaCard({ group }: ChamaCardProps) {
   const chartData = [
-    { name: 'Contributions', value: group.contributions },
-    { name: 'Expenses', value: group.expenses }
+    { name: 'Contributions', value: Number(group.contributions) || 0 },
+    { name: 'Expenses', value: Number(group.expenses) || 0 }
   ];
+
+  // Normalize members to a numeric count. API sometimes returns an array or an object.
+  const membersCount: number = (() => {
+    const m: any = (group as any).members;
+    if (typeof m === 'number') return m;
+    if (Array.isArray(m)) return m.length;
+    if (m && typeof m.count === 'number') return m.count;
+    if (m && typeof m.total === 'number') return m.total;
+    if (m && typeof m.length === 'number') return m.length;
+    return 0;
+  })();
 
   return (
     <Card className="flex flex-col bg-white dark:bg-[#2C3542] text-card-foreground shadow-md rounded-2xl h-full">
@@ -86,21 +98,21 @@ export function ChamaCard({ group }: ChamaCardProps) {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
             <div>
               <p className="text-muted-foreground text-xs">Contributions</p>
-              <p className="font-semibold">${group.contributions.toLocaleString()}</p>
+              <p className="font-semibold">{formatCurrency(Number(group.contributions) || 0)}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Landmark className="h-4 w-4 text-muted-foreground" />
             <div>
               <p className="text-muted-foreground text-xs">Expenses</p>
-              <p className="font-semibold">${group.expenses.toLocaleString()}</p>
+              <p className="font-semibold">{formatCurrency(Number(group.expenses) || 0)}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
             <div>
               <p className="text-muted-foreground text-xs">Members</p>
-              <p className="font-semibold">{group.members}</p>
+              <p className="font-semibold">{membersCount}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

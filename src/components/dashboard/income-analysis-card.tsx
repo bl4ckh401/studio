@@ -18,15 +18,11 @@ interface IncomeAnalysisCardProps {
   timePeriod: string;
   changeType: 'increase' | 'decrease';
   changeAmount: string;
+  data?: { name: string; income: number }[];
+  loading?: boolean;
 }
 
-const incomeData = [
-  { name: 'Jan', income: 8000 },
-  { name: 'Feb', income: 6000 },
-  { name: 'Mar', income: 9000 },
-];
-
-export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod, changeType, changeAmount }: IncomeAnalysisCardProps) {
+export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod, changeType, changeAmount, data = [], loading = false }: IncomeAnalysisCardProps) {
   const badgeBgColor = changeType === 'increase' ? 'bg-[#D6FBE6]' : 'bg-red-100';
   const badgeTextColor = changeType === 'increase' ? 'text-[#31B099]' : 'text-red-500';
   const arrowIcon = changeType === 'increase' ? <ArrowUpIcon className="h-3 w-3" /> : <ArrowDownIcon className="h-3 w-3" />;
@@ -64,9 +60,14 @@ export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod
       </div>
 
       <div className="w-[180px] h-[143px] hidden lg:block">
+        {loading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-24 h-12 bg-gray-200 animate-pulse rounded" />
+          </div>
+        ) : (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={incomeData}
+            data={data}
             margin={{
               top: 5,
               right: 0,
@@ -88,6 +89,7 @@ export function IncomeAnalysisCard({ title, metric, percentageChange, timePeriod
             <Bar dataKey="income" fill="#E7854D" radius={[4, 4, 0, 0]} barSize={20} />
           </BarChart>
         </ResponsiveContainer>
+        )}
       </div>
     </div>
   );

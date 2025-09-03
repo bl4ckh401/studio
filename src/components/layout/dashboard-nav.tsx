@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,9 +10,12 @@ import Image from 'next/image';
 import { NotificationPopup } from '@/components/dashboard/notification-popup';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/hooks/useAuth';
 
 
 export function DashboardNav() {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="w-full h-[89px] bg-[#1C2536] dark:bg-[#1A1C1E] flex items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-20">
       <div className="flex items-center gap-4 md:gap-8 lg:gap-16">
@@ -29,18 +34,16 @@ export function DashboardNav() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-12 w-12 rounded-full">
               <Avatar className="h-12 w-12">
-                <AvatarImage src="https://api.dicebear.com/9.x/adventurer/svg?seed=Ryan" alt="@shadcn" />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarImage src={user?.profilePicture || 'https://api.dicebear.com/9.x/adventurer/svg?seed=Ryan'} alt={user?.firstName || 'U'} />
+                <AvatarFallback>{(user?.firstName?.[0] || 'U')}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">Osborne Ozzy</p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  osborn@example.com
-                </p>
+                <p className="text-sm font-medium leading-none">{user?.firstName} {user?.lastName}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -57,7 +60,7 @@ export function DashboardNav() {
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => logout()}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

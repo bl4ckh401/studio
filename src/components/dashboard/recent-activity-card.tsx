@@ -31,10 +31,10 @@ export function RecentActivityCard({ activities }: RecentActivityCardProps) {
           </CardTitle>
           <InfoIcon className="h-[18px] w-[18px] text-[#6C7278] dark:text-gray-400" />
         </div>
-        <CardDescription className="flex items-center gap-1.5 text-sm font-medium text-[#ACB5BB] dark:text-gray-400 cursor-pointer">
+        {/* <CardDescription className="flex items-center gap-1.5 text-sm font-medium text-[#ACB5BB] dark:text-gray-400 cursor-pointer">
           See more
           <ArrowRightIcon className="h-3.5 w-3.5" />
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
       <CardContent className="flex flex-col p-0 gap-8">
         {activities.map((activity, id) => (

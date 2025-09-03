@@ -1,21 +1,17 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import { DashboardNav } from "@/components/layout/dashboard-nav"
 import { Suspense } from "react"
 import { DashboardHeader } from "@/components/layout/dashboard-header"
+import RequireAuth from '@/components/auth/RequireAuth'
 
-const inter = Inter({ subsets: ["latin"] })
-
-
-export default function RootLayout({
+export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={inter.className}>
+        <RequireAuth>
             <header className="sticky top-0 z-30">
                 <DashboardNav />
             </header>
@@ -27,8 +23,6 @@ export default function RootLayout({
                 {children}
               </Suspense>
             </main>
-
-            </body>
-        </html>
+        </RequireAuth>
     )
 }

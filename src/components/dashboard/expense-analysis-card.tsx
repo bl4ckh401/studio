@@ -11,19 +11,11 @@ interface ExpenseAnalysisCardProps {
   percentageChange: string;
   timePeriod: string;
   changeType: 'increase' | 'decrease';
+  data?: { name: string; expenses: number }[];
+  loading?: boolean;
 }
 
-// Dummy data for the chart
-const expenseData = [
-    { name: 'Jan', expenses: 4000 },
-    { name: 'Feb', expenses: 3000 },
-    { name: 'Mar', expenses: 5000 },
-    { name: 'Apr', expenses: 4500 },
-    { name: 'May', expenses: 6000 },
-    { name: 'Jun', expenses: 5500 },
-];
-
-export function ExpenseAnalysisCard({ title, metric, percentageChange, timePeriod, changeType }: ExpenseAnalysisCardProps) {
+export function ExpenseAnalysisCard({ title, metric, percentageChange, timePeriod, changeType, data = [], loading = false }: ExpenseAnalysisCardProps) {
   const badgeBgColor = changeType === 'increase' ? 'bg-[#D6FBE6]' : 'bg-[#F9C6BF]';
   const badgeTextColor = changeType === 'increase' ? 'text-[#31B099]' : 'text-[#C65468]';
   const arrowIcon = changeType === 'increase' ? <ArrowUpIcon className="h-3 w-3" /> : <ArrowDownIcon className="h-3 w-3" />;
@@ -63,9 +55,14 @@ export function ExpenseAnalysisCard({ title, metric, percentageChange, timePerio
       </div>
 
       <div className="w-full lg:w-[177px] h-[140px]">
+        {loading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-24 h-12 bg-gray-200 animate-pulse rounded" />
+          </div>
+        ) : (
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
-            data={expenseData}
+            data={data}
             margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
             >
             <defs>
@@ -89,6 +86,7 @@ export function ExpenseAnalysisCard({ title, metric, percentageChange, timePerio
             <Area type="monotone" dataKey="expenses" stroke={lineColor} strokeWidth={3} fillOpacity={1} fill="url(#colorExpense)" dot={{ r: 0 }} activeDot={{ r: 6, stroke: 'white', strokeWidth: 2, fill: lineColor }} />
           </AreaChart>
         </ResponsiveContainer>
+        )}
       </div>
     </div>
   );

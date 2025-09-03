@@ -28,6 +28,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -46,9 +48,14 @@ export default function LoginPage() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // No-op for now
-    console.log(values);
+    setSubmitting(true);
+    login(values.email, values.password).catch(() => {
+      // errors are handled inside useAuth via toasts
+    }).finally(() => setSubmitting(false));
   }
+
+  const { login } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-background">

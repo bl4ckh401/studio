@@ -1,0 +1,94 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import TransactionApprovalActions from "./TransactionApprovalActions";
+import { getMemberDisplay } from "./TransactionColumns";
+import { Button } from "@/components/ui/button";
+import { useTransaction } from "@/hooks/use-transaction";
+import { formatCurrency, formatDateWithTime } from "@/lib/utils";
+import { TransactionType } from "@/app/types/api";
+import { useAuthStore } from "@/store/authStore";
+import { canPerformFinancialActions } from "@/lib/finance-permissions";
+import AddIncome from "./AddIncome";
+
+interface Props {
+  group: any;
+}
+
+export default function IncomeTab({ group }: Props) {
+  const user = useAuthStore((s) => s.user);
+  const currentUserMembership = group?.members?.find(
+    (m: any) => m.userId === user?.id
+  );
+
+  const { getAll, transactions } = useTransaction();
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  async function getData() {
+    if (!group) return;
+    await getAll(group.id, offset, limit, TransactionType.INCOME);
+  }
+
+  const handlePageChange = (newOffset: number) => setOffset(newOffset);
+
+  return (
+    <div>
+      {/* Actions header: Add Income (modal will hide itself if user lacks permission) */}
+      <div className="flex justify-end mb-4">
+        <AddIncome
+          group={group}
+          getAll={getData}
+          currentUserRole={currentUserMembership?.role?.name}
+        />
+      </div>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Member</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>Method</TableHead>
+              <TableHead className="text-right">Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {transactions.map((tx: any) => (
+              <TableRow key={tx.id}>
+                  <TableCell dataLabel="Date">{formatDateWithTime(tx.date || tx.createdAt || tx.timestamp)}</TableCell>
+                  <TableCell className="font-medium" dataLabel="Member">{getMemberDisplay(tx, group)}</TableCell>
+                  <TableCell className="font-medium" dataLabel="Source">{tx.source?.name || tx.source || tx.description || "-"}</TableCell>
+                  <TableCell className="text-right text-green-500" dataLabel="Amount">{formatCurrency(Number(tx.amount || tx.value || 0))}</TableCell>
+                  <TableCell dataLabel="Method">{tx.paymentMethod || tx.method || "-"}</TableCell>
+                  <TableCell className="text-right" dataLabel="Status">{tx.status || tx.transactionStatus || "-"}</TableCell>
+                  <TableCell className="text-right" dataLabel="Actions">
+                    <TransactionApprovalActions
+                      transaction={tx}
+                      getAll={getData}
+                      currentMembership={currentUserMembership}
+                    />
+                  </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}

@@ -38,7 +38,7 @@ export function DashboardTabs() {
 
       <div className="flex items-center px-4 py-3 bg-[rgba(255,255,255,0.07)] rounded-full gap-2 text-white font-satoshi text-sm h-12 w-auto">
         <CalendarIcon className="h-6 w-6 text-white" />
-        <span>Oct 22, 2022</span>
+        <span>{new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
       </div>
     </div>
   );

@@ -14,11 +14,11 @@ export function ActivityItem({ icon, title, subtitle, amount, date }: ActivityIt
       return icon;
     }
     switch (subtitle.toLowerCase()) {
-      case 'receive':
+      case 'contribution':
         return <ArrowDown className="h-6 w-6 text-green-500" />;
-      case 'subscriptions':
+      case 'expense':
         return <DollarSign className="h-6 w-6 text-red-500" />;
-      case 'transfer':
+      case 'expense':
          return <ArrowUp className="h-6 w-6 text-gray-500" />;
       default:
         return <DollarSign className="h-6 w-6 text-gray-400" />;
@@ -39,7 +39,7 @@ export function ActivityItem({ icon, title, subtitle, amount, date }: ActivityIt
       </div>
       <div className="flex flex-col items-end">
         <span className="font-manrope text-base font-semibold text-[#1A1C1E] dark:text-white">{amount}</span>
-        <span className="font-manrope text-sm font-medium text-[#ACB5BB] dark:text-[#A2A6AA]">{date}</span>
+        {/* <span className="font-manrope text-sm font-medium text-[#ACB5BB] dark:text-[#A2A6AA]">{date}</span> */}
       </div>
     </div>
   );
